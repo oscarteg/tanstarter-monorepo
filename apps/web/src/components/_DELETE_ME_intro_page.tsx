@@ -8,8 +8,8 @@ import { Suspense } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { SignOutButton } from "~/components/sign-out-button";
-import { ThemeToggle } from "~/components/theme-toggle";
+import { SignOutButton } from "#/components/sign-out-button";
+import { ThemeToggle } from "#/components/theme-toggle";
 
 /**
  * This is the intro component for TanStarter, which you may delete after creating the project.

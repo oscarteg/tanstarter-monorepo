@@ -9,7 +9,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { GalleryVerticalEndIcon, LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { SignInSocialButton } from "~/components/sign-in-social-button";
+import { SignInSocialButton } from "#/components/sign-in-social-button";
 
 export const Route = createFileRoute("/_guest/signup")({
   component: SignupForm,

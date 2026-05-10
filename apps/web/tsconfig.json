@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["node", "vite/client"],
     "paths": {
-      "~/*": ["./src/*"],
+      "#/*": ["./src/*"],
 
       // for shadcn CLI
       "@repo/ui/*": ["../../packages/ui/*"]
