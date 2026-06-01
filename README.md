@@ -107,11 +107,9 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 
 ## Goodies
 
-#### Git hooks
+#### Upgrading dependencies
 
-We use [Vite+ Commit Hooks](https://viteplus.dev/guide/commit-hooks) to run git hooks with the following tools:
-
-- [`vp staged`](https://viteplus.dev/guide/commit-hooks#vp-staged) - Run Oxfmt to format staged files on commit (`pre-commit`).
+Dependency versions are pinned, so they may be slightly outdated when you create your project. To selectively upgrade packages, run `pnpm deps` or `pnx taze@latest -Ilwr --maturity-period 3`.
 
 #### Scripts
 
