@@ -17,7 +17,7 @@ pnpm create mugnavo -t monorepo
 - [Vite 8](https://vite.dev/) + [Nitro v3](https://nitro.build/)
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) + [Base UI](https://base-ui.com/) (base-rhea, [`--preset b1au68YWO`](https://ui.shadcn.com/create?preset=b1au68YWO&base=base&template=start&pointer=true))
 - [Drizzle ORM v1](https://orm.drizzle.team/docs/relations-v1-v2) + PostgreSQL
-- [Better Auth](https://www.better-auth.com/)
+- [Better Auth](https://better-auth.com/)
 
 ```sh
 ├── apps
