@@ -65,7 +65,6 @@ export default defineConfig({
       typeCheck: true,
     },
     jsPlugins: [
-      { name: "react-hooks-js", specifier: "eslint-plugin-react-hooks" },
       // Plugins with "/" in name have to be aliased for now
       // Issue: https://github.com/oxc-project/oxc/issues/14557
       {
@@ -87,6 +86,10 @@ export default defineConfig({
 
       "jsx-a11y/prefer-tag-over-role": "off",
 
+      // Experimental:
+      // https://oxc.rs/docs/guide/usage/linter/rules/react/react-compiler.html
+      "react/react-compiler": "warn",
+
       "eslint-tanstack-router/create-route-property-order": "warn",
 
       "eslint-tanstack-query/exhaustive-deps": "warn",
@@ -96,27 +99,6 @@ export default defineConfig({
       "eslint-tanstack-query/infinite-query-property-order": "warn",
       "eslint-tanstack-query/no-void-query-fn": "warn",
       "eslint-tanstack-query/mutation-property-order": "warn",
-
-      // ref:
-      // - https://github.com/TheAlexLichter/oxlint-react-compiler-rules/issues/1
-      // - https://github.com/facebook/react/blob/main/packages/eslint-plugin-react-hooks/README.md#custom-configuration
-      // Recommended rules (from LintRulePreset.Recommended)
-      "react-hooks-js/config": "error",
-      "react-hooks-js/error-boundaries": "error",
-      "react-hooks-js/gating": "error",
-      "react-hooks-js/globals": "error",
-      "react-hooks-js/immutability": "error",
-      "react-hooks-js/incompatible-library": "warn",
-      "react-hooks-js/preserve-manual-memoization": "error",
-      "react-hooks-js/purity": "error",
-      "react-hooks-js/refs": "error",
-      "react-hooks-js/set-state-in-effect": "warn",
-      "react-hooks-js/set-state-in-render": "error",
-      "react-hooks-js/static-components": "error",
-      "react-hooks-js/unsupported-syntax": "warn",
-      "react-hooks-js/use-memo": "error",
-      // Recommended-latest rules (from LintRulePreset.RecommendedLatest)
-      "react-hooks-js/void-use-memo": "error",
     },
     ignorePatterns: [
       "dist",

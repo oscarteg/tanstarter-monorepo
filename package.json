@@ -27,7 +27,6 @@
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "catalog:",
     "@tanstack/eslint-plugin-router": "catalog:",
-    "eslint-plugin-react-hooks": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {
