@@ -46,6 +46,7 @@
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
+    "cross-env": "catalog:",
     "nitro": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",

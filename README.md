@@ -85,16 +85,13 @@ pnpm create mugnavo -t monorepo
 
 ## Deploying to production
 
-The [vite config](./apps/web/vite.config.ts#L45-L46) is configured to use Nitro by default, which supports many [deployment presets](https://nitro.build/deploy) like Netlify, Vercel, Node.js, and more.
+The [vite config](./apps/web/vite.config.ts#L45-L50) is configured to use Nitro by default, which supports many [deployment presets](https://nitro.build/deploy) like Netlify, Vercel, Node.js, and more.
 
 Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/docs/framework/react/guide/hosting) for more information.
 
 ### Build caching
 
 Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run build` as the build command.
-
-> [!IMPORTANT]
-> Task caching is **_currently disabled_** in the root [`vite.config.ts`](./vite.config.ts#L15-L20) since Vite+ only replays terminal output for now, not build artifacts. If your platform preserves build outputs between deployments, you can re-enable it. See [this issue](https://github.com/mugnavo/tanstarter-plus/issues/8) for more details.
 
 ## Issue watchlist
 
@@ -103,7 +100,7 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 - [Nitro v3 beta](https://nitro.build/blog/v3-beta) - This template is configured with Nitro v3 beta by default.
 - [Drizzle ORM v1 RC](https://orm.drizzle.team/docs/relations-v1-v2) - Drizzle ORM v1 is in RC with relations v2.
 - [Better Auth releases](https://github.com/better-auth/better-auth/releases) - We're using Better Auth v1.7 RC which supports Drizzle Relations v2.
-- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in alpha.
+- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in beta.
 
 ## Goodies
 

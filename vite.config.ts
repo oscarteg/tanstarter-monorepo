@@ -12,10 +12,7 @@ export default defineConfig({
   // https://viteplus.dev/guide/run
   run: {
     cache: {
-      // Disabled since Vite+ only replays terminal output, not build artifacts.
-      // Enable if your platform preserves build outputs between deployments.
-      // see: https://github.com/mugnavo/tanstarter-plus/issues/8
-      tasks: false,
+      tasks: true,
     },
   },
 

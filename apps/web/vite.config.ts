@@ -15,8 +15,7 @@ export default defineConfig({
     tasks: {
       build: {
         // When deploying, use `vp run build` as the build command, not `vp build`
-        command: "vp build",
-        env: ["NODE_ENV", "VITE_*"],
+        command: "cross-env NODE_ENV=production vp build",
         input: [
           { auto: true },
           "!**/.output/**",
