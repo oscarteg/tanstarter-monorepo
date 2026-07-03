@@ -1,4 +1,4 @@
-# [TanStarter Plus](https://github.com/mugnavo/tanstarter-plus)
+# [TanStarter Monorepo](https://github.com/mugnavo/tanstarter-monorepo)
 
 > [!IMPORTANT]
 > This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
@@ -46,10 +46,15 @@ pnpm create mugnavo -t monorepo
 
 ## Getting Started
 
-> [!IMPORTANT]
-> This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
+#### Prerequisites
 
-1. [Use this template](https://github.com/new?template_name=tanstarter-plus&template_owner=mugnavo) or create a project using our CLI:
+- [Node.js](https://nodejs.org/en/download) >= 24
+- [Vite Plus](https://viteplus.dev/guide/#install-vp) (`vp`)
+- [pnpm](https://pnpm.io/installation) >= 11
+
+#### Setup
+
+1. [Use this template](https://github.com/new?template_name=tanstarter-monorepo&template_owner=mugnavo) or create a project using our CLI:
 
    ```
    pnpm create mugnavo -t monorepo
@@ -138,4 +143,4 @@ Code in this template is public domain via [Unlicense](./LICENSE). Feel free to 
 ## Related templates
 
 - [mugnavo/tanstarter](https://github.com/mugnavo/tanstarter) - The original minimal version that this template is based on.
-- [tsu-moe/tsu-stack](https://github.com/tsu-moe/tsu-stack) - An opinionated and batteries-included monorepo template from Luzefiru, built on tanstarter-plus, with Paraglide.js (i18n), Hono, oRPC, and more.
+- [tsu-moe/tsu-stack](https://github.com/tsu-moe/tsu-stack) - An opinionated and batteries-included monorepo template from Luzefiru, built on tanstarter-monorepo, with Paraglide.js (i18n), Hono, oRPC, and more.
