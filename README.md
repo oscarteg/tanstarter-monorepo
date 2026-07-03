@@ -105,7 +105,7 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 - [Nitro v3 beta](https://nitro.build/blog/v3-beta) - This template is configured with Nitro v3 beta by default.
 - [Drizzle ORM v1 RC](https://orm.drizzle.team/docs/relations-v1-v2) - Drizzle ORM v1 is in RC with relations v2.
 - [Better Auth releases](https://github.com/better-auth/better-auth/releases) - We're using Better Auth v1.7 RC which supports Drizzle Relations v2.
-- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in beta.
+- [Vite+ releases](https://github.com/voidzero-dev/vite-plus/releases) - Vite+ is in beta.
 
 ## Goodies
 
