@@ -1,8 +1,5 @@
 # [TanStarter Monorepo](https://github.com/mugnavo/tanstarter-monorepo)
 
-> [!IMPORTANT]
-> This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
-
 <!-- scaffold:description -->
 
 A minimal monorepo starter for 🏝️ TanStack Start, based on [mugnavo/tanstarter](https://github.com/mugnavo/tanstarter).
@@ -49,8 +46,8 @@ pnpm create mugnavo -t monorepo
 #### Prerequisites
 
 - [Node.js](https://nodejs.org/en/download) >= 24
-- [Vite Plus](https://viteplus.dev/guide/#install-vp) (`vp`)
 - [pnpm](https://pnpm.io/installation) >= 11
+- [Vite Plus](https://viteplus.dev/guide/#install-vp) (`vp`)
 
 #### Setup
 
