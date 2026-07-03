@@ -15,7 +15,6 @@
   "dependencies": {
     "@base-ui/react": "catalog:",
     "@icons-pack/react-simple-icons": "catalog:",
-    "@tanstack/react-form-start": "catalog:",
     "class-variance-authority": "catalog:",
     "cnfast": "catalog:",
     "date-fns": "catalog:",
