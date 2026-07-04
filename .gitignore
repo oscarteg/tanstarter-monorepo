@@ -34,3 +34,4 @@ yarn-error.log*
 .cache
 .tanstack
 worker-configuration.d.ts
+.fallow/

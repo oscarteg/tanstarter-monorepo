@@ -15,6 +15,7 @@
     "check:fix": "vp check --fix",
     "prepare": "vp config",
     "deps": "vpx taze@latest -Ilwr --maturity-period 3",
+    "fallow": "vpx fallow@latest --skip health",
     "tanstack": "vpx @tanstack/cli@latest",
     "db": "vp run --filter=@repo/db db",
     "ui": "vp run --filter=@repo/ui ui",
