@@ -15,4 +15,4 @@ Vitest hasn't been set up yet. Prefer lint checks for now.
 
 ## Formatting
 
-Oxfmt (via Vite+) is configured for consistent code formatting via `vpr fmt`. It runs automatically on commit via Vite+ pre-commit hooks, so manual formatting is not necessary.
+Oxfmt (via Vite+) is configured for consistent code formatting via `vpr format`. It runs automatically on commit via Vite+ pre-commit hooks, so manual formatting is not necessary.
