@@ -62,8 +62,8 @@ pnpm create mugnavo -t monorepo
 3. Generate the initial migration with drizzle-kit, then apply to your database:
 
    ```sh
-   pnpm db generate
-   pnpm db migrate
+   vpr db generate
+   vpr db migrate
    ```
 
    https://orm.drizzle.team/docs/migrations
@@ -71,7 +71,7 @@ pnpm create mugnavo -t monorepo
 4. Run the development server:
 
    ```sh
-   pnpm dev
+   vpr dev
    ```
 
    The development server should now be running at [http://localhost:3000](http://localhost:3000).
@@ -80,9 +80,9 @@ pnpm create mugnavo -t monorepo
 > If you want to run a local Postgres instance via Docker Compose with the dev server, you can use the [dev.sh](./dev.sh) script:
 >
 > ```sh
-> ./dev.sh # runs "pnpm run --recursive --parallel dev"
+> ./dev.sh # runs "vp run --recursive --parallel dev"
 > # or
-> ./dev.sh web # runs "pnpm run --filter=@repo/web dev"
+> ./dev.sh web # runs "vp run --filter=@repo/web dev"
 > ```
 
 ## Deploying to production
@@ -108,19 +108,16 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 
 #### Upgrading dependencies
 
-Dependency versions are pinned, so they may be slightly outdated when you create your project. To selectively upgrade packages, run `pnpm deps` or `pnx taze@latest -Ilwr --maturity-period 3`.
+Dependency versions are pinned, so they may be slightly outdated when you create your project. To selectively upgrade packages, run `vpr deps` or `vpx taze@latest -Ilwr --maturity-period 3`.
 
 #### Scripts
 
-This template is configured for **[pnpm](https://pnpm.io/)** by default. Check the root [package.json](./package.json) and each workspace package's `package.json` for the full list of available scripts.
+Check the root [package.json](./package.json) and each workspace package's `package.json` for the full list of available scripts.
 
 - **`auth:generate`** - Regenerate the [auth db schema](./packages/db/src/schema/auth.schema.ts) if you've made changes to your Better Auth [config](./packages/auth/src/auth.ts).
-- **`ui`** - The shadcn/ui CLI. (e.g. `pnpm ui add button`)
-- **`format`**, **`lint`** - Run Oxfmt and Oxlint, or both via `pnpm check`.
+- **`ui`** - The shadcn/ui CLI. (e.g. `vpr ui add button`)
+- **`format`**, **`lint`** - Run Oxfmt and Oxlint, or both via `vpr check`.
 - **`deps`** - Selectively upgrade dependencies via taze.
-
-> [!NOTE]
-> To switch to another package manager (e.g., bun or npm), you'll need to replace or remove [`pnpm-workspace.yaml`](./pnpm-workspace.yaml), which uses pnpm [catalogs](https://pnpm.io/catalogs). Bun and Yarn have their own equivalents, but the file formats may differ.
 
 #### Utilities
 

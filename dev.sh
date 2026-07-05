@@ -45,4 +45,4 @@ else
 fi
 
 # Start the development server
-pnpm run $DEV_CMD
+vp run $DEV_CMD
