@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vp run --recursive build",
     "build:web": "vp run web#build",
-    "dev": "vpr --recursive --parallel dev",
+    "dev": "vp run --recursive --parallel dev",
     "dev:web": "vp run --filter=@repo/web dev",
     "lint": "vp lint --type-aware --type-check",
     "lint:fix": "vp lint --type-aware --type-check --fix",
