@@ -40,7 +40,10 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
-    devtools(),
+    devtools({
+      // https://tanstack.com/devtools/latest/docs/vite-plugin#console-piping
+      consolePiping: { enabled: false },
+    }),
     tanstackStart(),
     // https://tanstack.com/start/latest/docs/framework/react/guide/hosting
     nitro({
