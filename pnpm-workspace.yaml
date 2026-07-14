@@ -22,14 +22,14 @@ catalog:
   "@tanstack/eslint-plugin-query": 5.101.2
   "@tanstack/eslint-plugin-router": 1.162.0
   "@tanstack/react-devtools": 0.10.8
-  "@tanstack/react-form-devtools": 0.2.30
-  "@tanstack/react-form": 1.33.1
+  "@tanstack/react-form-devtools": 0.2.31
+  "@tanstack/react-form": 1.33.2
   "@tanstack/react-query": 5.101.2
   "@tanstack/react-query-devtools": 5.101.2
-  "@tanstack/react-router": 1.170.17
+  "@tanstack/react-router": 1.170.18
   "@tanstack/react-router-devtools": 1.167.0
   "@tanstack/react-router-ssr-query": 1.167.1
-  "@tanstack/react-start": 1.168.27
+  "@tanstack/react-start": 1.168.28
   "@types/babel__core": 7.20.5
   "@types/node": 26.1.1
   "@types/react": 19.2.17
