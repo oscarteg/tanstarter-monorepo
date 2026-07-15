@@ -23,7 +23,7 @@
     "shadcn": "catalog:",
     "sonner": "catalog:",
     "tw-animate-css": "catalog:",
-    "zod": "catalog:"
+    "valibot": "catalog:"
   },
   "devDependencies": {
     "@repo/tsconfig": "workspace:*",
