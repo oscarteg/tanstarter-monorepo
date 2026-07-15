@@ -1,40 +1,93 @@
-import { Button } from "@repo/ui/components/button";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@repo/ui/components/breadcrumb";
+import { Input } from "@repo/ui/components/input";
+import { Separator } from "@repo/ui/components/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@repo/ui/components/sidebar";
+import { TooltipProvider } from "@repo/ui/components/tooltip";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
+import { SearchIcon } from "lucide-react";
+import { Fragment } from "react";
 
-import { SignOutButton } from "#/components/sign-out-button";
+import { AppSidebar } from "#/components/app-sidebar";
 import { ThemeToggle } from "#/components/theme-toggle";
 
 export const Route = createFileRoute("/_auth/app")({
   component: AppLayout,
 });
 
-function AppLayout() {
-  return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-2 px-2">
-      <div className="flex w-full max-w-3xl justify-between">
-        <div className="flex items-center gap-1">
-          <Button render={<Link to="/" />} size="sm" nativeButton={false}>
-            back to home
-          </Button>
-          <span className="rounded-md border bg-card p-1 font-mono text-xs text-card-foreground">
-            _auth/app/route.tsx
-          </span>
-        </div>
-        <ThemeToggle />
-      </div>
-      <div className="w-full max-w-3xl rounded-md border p-2">
-        <Outlet />
-      </div>
+/** Title-case a URL segment, e.g. "data-fetching" -> "Data Fetching". */
+function humanize(segment: string) {
+  return segment
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
-      <div className="flex w-full max-w-3xl flex-wrap justify-between gap-2 text-sm">
-        <div className="flex flex-col gap-0.5">
-          what's next? maybe a sidebar?
-          <span className="rounded-md border bg-card px-2 py-1 font-mono text-xs text-card-foreground">
-            vpr ui add sidebar
-          </span>
-        </div>
-        <SignOutButton />
-      </div>
-    </div>
+function AppLayout() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const segments = pathname.split("/").filter(Boolean);
+
+  return (
+    <TooltipProvider delay={0}>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator
+                orientation="vertical"
+                className="mr-2 data-[orientation=vertical]:h-4"
+              />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {segments.map((segment, index) => {
+                    const isLast = index === segments.length - 1;
+                    const href = `/${segments.slice(0, index + 1).join("/")}`;
+                    return (
+                      <Fragment key={href}>
+                        <BreadcrumbItem className="hidden md:block">
+                          {isLast ? (
+                            <BreadcrumbPage>{humanize(segment)}</BreadcrumbPage>
+                          ) : (
+                            <BreadcrumbLink href={href}>{humanize(segment)}</BreadcrumbLink>
+                          )}
+                        </BreadcrumbItem>
+                        {!isLast && <BreadcrumbSeparator className="hidden md:block" />}
+                      </Fragment>
+                    );
+                  })}
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
+            <div className="ml-auto flex items-center gap-2 px-4">
+              <div className="relative hidden sm:block">
+                <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  className="h-8 w-48 pl-8"
+                  aria-label="Search"
+                />
+              </div>
+              <ThemeToggle />
+            </div>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4">
+            <Outlet />
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
+    </TooltipProvider>
   );
 }
