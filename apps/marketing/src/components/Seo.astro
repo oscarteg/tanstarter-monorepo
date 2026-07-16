@@ -1,0 +1,68 @@
+---
+import { site } from "../config/site";
+
+type Props = {
+  /** Run through `site.seo.titleTemplate`. Omit to use the default title verbatim. */
+  title?: string;
+  description?: string;
+  /** Absolute URL or site-relative path to a 1200x630 image. */
+  image?: string;
+  type?: "website" | "article";
+  /** Keeps a page out of the index — the 404 has no business being crawled. */
+  noindex?: boolean;
+};
+
+const {
+  title,
+  description = site.seo.defaultDescription,
+  image = site.seo.defaultImage,
+  type = "website",
+  noindex = false,
+} = Astro.props;
+
+const resolvedTitle = title ? site.seo.titleTemplate.replace("%s", title) : site.seo.defaultTitle;
+
+// `site` is set in astro.config.mjs, which makes these absolute — required by
+// both OpenGraph and the sitemap.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+const origin = new URL("/", Astro.site).href;
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: origin,
+  logo: site.logo.light,
+  sameAs: site.social.map((link) => link.href),
+};
+
+const website = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: origin,
+  description: site.seo.defaultDescription,
+};
+---
+
+<title>{resolvedTitle}</title>
+<meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={resolvedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={site.seo.locale} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={site.seo.twitterHandle} />
+<meta name="twitter:title" content={resolvedTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} is:inline />
+<script type="application/ld+json" set:html={JSON.stringify(website)} is:inline />

@@ -1,0 +1,37 @@
+---
+import type { Person } from "../../config/shared";
+import Section from "../elements/Section.astro";
+
+type Props = {
+  id?: string;
+  headline: string;
+  subheadline: string;
+  members: Person[];
+};
+
+const { id, headline, subheadline, members } = Astro.props;
+---
+
+<Section id={id} headline={headline} subheadline={subheadline}>
+  <ul role="list" class="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+    {
+      members.map((member) => (
+        <li class="flex flex-col gap-4 text-sm/7">
+          <div class="aspect-3/4 w-full overflow-hidden rounded-sm outline -outline-offset-1 outline-black/5 *:size-full *:object-cover dark:outline-white/5">
+            <img
+              src={member.avatar}
+              alt=""
+              class="not-dark:bg-white/75 dark:bg-black/75"
+              width={800}
+              height={1000}
+            />
+          </div>
+          <div>
+            <p class="font-semibold text-olive-950 dark:text-white">{member.name}</p>
+            <p class="text-olive-700 dark:text-olive-400">{member.byline}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

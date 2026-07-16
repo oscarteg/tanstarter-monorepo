@@ -1,0 +1,20 @@
+---
+import Link from "../components/elements/Link.astro";
+import Main from "../components/elements/Main.astro";
+import ArrowNarrowRightIcon from "../components/icons/ArrowNarrowRightIcon.astro";
+import HeroSimpleCentered from "../components/sections/HeroSimpleCentered.astro";
+import { site } from "../config/site";
+import Layout from "../layouts/Layout.astro";
+
+const { notFound } = site;
+---
+
+<Layout title={notFound.title} description={notFound.subheadline} noindex>
+  <Main>
+    <HeroSimpleCentered headline={notFound.headline} subheadline={notFound.subheadline}>
+      <Link slot="cta" href={notFound.cta.href}>
+        {notFound.cta.label} <ArrowNarrowRightIcon />
+      </Link>
+    </HeroSimpleCentered>
+  </Main>
+</Layout>

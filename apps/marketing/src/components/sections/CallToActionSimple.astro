@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Container from "../elements/Container.astro";
+import Eyebrow from "../elements/Eyebrow.astro";
+import Subheading from "../elements/Subheading.astro";
+import Text from "../elements/Text.astro";
+
+type Props = HTMLAttributes<"section"> & {
+  eyebrow?: string;
+  headline: string;
+  subheadline?: string;
+};
+
+const { eyebrow, headline, subheadline, class: className, ...rest } = Astro.props;
+---
+
+<section class:list={["py-16", className]} {...rest}>
+  <Container class="flex flex-col gap-10">
+    <div class="flex flex-col gap-6">
+      <div class="flex max-w-4xl flex-col gap-2">
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        <Subheading>{headline}</Subheading>
+      </div>
+      {
+        subheadline && (
+          <Text class="flex max-w-3xl flex-col gap-4 text-pretty">
+            <p>{subheadline}</p>
+          </Text>
+        )
+      }
+    </div>
+    <slot name="cta" />
+  </Container>
+</section>

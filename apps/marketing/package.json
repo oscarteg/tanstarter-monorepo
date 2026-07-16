@@ -1,0 +1,25 @@
+{
+  "name": "@repo/marketing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "sync": "astro sync"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.3",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/inter": "catalog:",
+    "@fontsource/instrument-serif": "5.2.8",
+    "@tailwindcss/vite": "catalog:",
+    "@tailwindplus/elements": "1.0.22",
+    "astro": "^7.0.9",
+    "tailwindcss": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

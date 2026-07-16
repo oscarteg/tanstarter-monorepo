@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"svg">;
+
+const { class: className, ...rest } = Astro.props;
+
+const labelled = "aria-label" in rest;
+---
+
+<svg
+  width="13"
+  height="13"
+  viewBox="0 0 13 13"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1"
+  role={labelled ? "img" : undefined}
+  aria-hidden={labelled ? undefined : "true"}
+  class:list={["inline-block", className]}
+  {...rest}
+>
+  <path d="M1.5 6.5L5.5 11.5L11.5 1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>

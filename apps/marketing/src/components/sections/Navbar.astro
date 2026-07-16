@@ -1,0 +1,128 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { site } from "../../config/site";
+import ButtonLink from "../elements/ButtonLink.astro";
+import PlainButtonLink from "../elements/PlainButtonLink.astro";
+
+type Props = HTMLAttributes<"header">;
+
+const { class: className, ...rest } = Astro.props;
+
+// The nav list is rendered twice (desktop bar + mobile dialog). Building it from
+// config once keeps the two in sync. The trailing log-in entry only shows on the
+// narrowest screens, where the header action is hidden.
+const links = [
+  ...site.nav.map((link) => ({ ...link, class: undefined as string | undefined })),
+  { ...site.actions.secondary, class: "sm:hidden" },
+];
+
+const linkClass =
+  "group inline-flex items-center justify-between gap-2 text-3xl/10 font-medium text-olive-950 lg:text-sm/7 dark:text-white";
+---
+
+<header class:list={["sticky top-0 z-10 bg-olive-100 dark:bg-olive-950", className]} {...rest}>
+  <style is:global>
+    :root {
+      --scroll-padding-top: 5.25rem;
+    }
+  </style>
+  <nav>
+    <div class="mx-auto flex h-(--scroll-padding-top) max-w-7xl items-center gap-4 px-6 lg:px-10">
+      <div class="flex flex-1 gap-8 max-lg:hidden">
+        {
+          links.map((link) => (
+            <a href={link.href} class:list={[linkClass, link.class]}>
+              {link.label}
+              <span class="inline-flex p-1.5 opacity-0 group-hover:opacity-100 lg:hidden" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="flex items-center">
+        <a href="/" class="inline-flex items-stretch">
+          <img
+            src={site.logo.light}
+            alt={site.logo.alt}
+            class="dark:hidden"
+            width={site.logo.width}
+            height={site.logo.height}
+          />
+          <img
+            src={site.logo.dark}
+            alt={site.logo.alt}
+            class="not-dark:hidden"
+            width={site.logo.width}
+            height={site.logo.height}
+          />
+        </a>
+      </div>
+      <div class="flex flex-1 items-center justify-end gap-4">
+        <div class="flex shrink-0 items-center gap-5">
+          <PlainButtonLink href={site.actions.secondary.href} class="max-sm:hidden">
+            {site.actions.secondary.label}
+          </PlainButtonLink>
+          <ButtonLink href={site.actions.primary.href}>{site.actions.primary.label}</ButtonLink>
+        </div>
+
+        <button
+          command="show-modal"
+          commandfor="mobile-menu"
+          aria-label="Toggle menu"
+          class="inline-flex rounded-full p-1.5 text-olive-950 hover:bg-olive-950/10 lg:hidden dark:text-white dark:hover:bg-white/10"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" class="size-6" aria-hidden="true">
+            <path
+              fill-rule="evenodd"
+              d="M3.748 8.248a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75ZM3.748 15.75a.75.75 0 0 1 .75-.751h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <el-dialog class="lg:hidden">
+      <dialog id="mobile-menu" class="backdrop:bg-transparent">
+        <el-dialog-panel class="fixed inset-0 bg-olive-100 px-6 py-6 lg:px-10 dark:bg-olive-950">
+          <div class="flex justify-end">
+            <button
+              command="close"
+              commandfor="mobile-menu"
+              aria-label="Toggle menu"
+              class="inline-flex rounded-full p-1.5 text-olive-950 hover:bg-olive-950/10 dark:text-white dark:hover:bg-white/10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="mt-6 flex flex-col gap-6">
+            {
+              links.map((link) => (
+                <a href={link.href} class:list={[linkClass, link.class]}>
+                  {link.label}
+                  <span class="inline-flex p-1.5 opacity-0 group-hover:opacity-100 lg:hidden" aria-hidden="true">
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </span>
+                </a>
+              ))
+            }
+          </div>
+        </el-dialog-panel>
+      </dialog>
+    </el-dialog>
+  </nav>
+</header>

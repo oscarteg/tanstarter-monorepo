@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"main">;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<main class:list={["isolate overflow-clip", className]} {...rest}>
+  <slot />
+</main>

@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"svg">;
+
+const { class: className, ...rest } = Astro.props;
+
+// Decorative by default; callers that pass `aria-label` get an exposed role.
+const labelled = "aria-label" in rest;
+---
+
+<svg
+  width="13"
+  height="7"
+  viewBox="0 0 13 7"
+  fill="none"
+  stroke-width="1"
+  role={labelled ? "img" : undefined}
+  aria-hidden={labelled ? undefined : "true"}
+  class:list={["inline-block", className]}
+  {...rest}
+>
+  <path
+    d="M12.5049 3.49512L0.504883 3.49512"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+  <path d="M9.5 6.5L12.5 3.5L9.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>

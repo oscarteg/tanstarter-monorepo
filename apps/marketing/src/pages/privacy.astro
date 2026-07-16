@@ -1,0 +1,20 @@
+---
+import { getEntry, render } from "astro:content";
+import Main from "../components/elements/Main.astro";
+import DocumentCentered from "../components/sections/DocumentCentered.astro";
+import Layout from "../layouts/Layout.astro";
+
+const entry = await getEntry("pages", "privacy");
+if (!entry) throw new Error("Missing src/content/pages/privacy.mdx");
+
+const { Content } = await render(entry);
+const { title, subheadline, description } = entry.data;
+---
+
+<Layout title={title} description={description}>
+  <Main>
+    <DocumentCentered id="document" headline={title} subheadline={subheadline}>
+      <Content />
+    </DocumentCentered>
+  </Main>
+</Layout>

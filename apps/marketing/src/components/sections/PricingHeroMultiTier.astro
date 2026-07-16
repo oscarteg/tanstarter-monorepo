@@ -1,0 +1,57 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { BillingPeriod, PricingTier } from "../../config/pricing";
+import { pricing } from "../../config/pricing";
+import Container from "../elements/Container.astro";
+import Heading from "../elements/Heading.astro";
+import Text from "../elements/Text.astro";
+import Plan from "./Plan.astro";
+
+type Props = HTMLAttributes<"section"> & {
+  headline: string;
+  subheadline: string;
+  /** Billing periods, rendered as tabs. */
+  periods: readonly BillingPeriod[];
+  tiers: PricingTier[];
+};
+
+const { headline, subheadline, periods, tiers, class: className, ...rest } = Astro.props;
+---
+
+<section class:list={["py-16", className]} {...rest}>
+  <el-tab-group>
+    <Container class="flex flex-col gap-16">
+      <div class="flex flex-col items-center gap-6">
+        <slot name="eyebrow" />
+        <Heading>{headline}</Heading>
+        <Text size="lg" class="flex max-w-xl flex-col gap-4 text-center">
+          <p>{subheadline}</p>
+        </Text>
+        <el-tab-list class="flex items-center gap-1 rounded-full bg-olive-950/5 p-1 dark:bg-white/5">
+          {
+            periods.map((period) => (
+              <button
+                type="button"
+                class="rounded-full px-4 py-1 text-sm/7 font-medium text-olive-950 aria-selected:bg-olive-950 aria-selected:text-white dark:text-white dark:aria-selected:bg-white/10 dark:aria-selected:text-white"
+              >
+                {period}
+              </button>
+            ))
+          }
+        </el-tab-list>
+      </div>
+      <el-tab-panels>
+        {
+          periods.map((period) => (
+            <div class="grid grid-cols-1 gap-2 sm:has-[>:nth-child(5)]:grid-cols-2 sm:max-lg:has-[>:last-child:nth-child(even)]:grid-cols-2 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none lg:has-[>:nth-child(5)]:grid-flow-row lg:has-[>:nth-child(5)]:grid-cols-3">
+              {tiers.map((tier) => (
+                <Plan tier={tier} price={tier.price[period]} period={pricing.periodSuffix[period]} />
+              ))}
+            </div>
+          ))
+        }
+      </el-tab-panels>
+      <slot name="footer" />
+    </Container>
+  </el-tab-group>
+</section>

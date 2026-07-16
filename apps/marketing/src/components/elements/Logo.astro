@@ -1,0 +1,32 @@
+---
+/**
+ * A single client logo in a `LogoGrid`.
+ *
+ * The asset host recolours SVGs via query params, so one `src` in config yields
+ * both the light and dark variant.
+ */
+type Props = {
+  src: string;
+  width: number;
+  height: number;
+};
+
+const { src, width, height } = Astro.props;
+---
+
+<span class="flex h-8 items-stretch">
+  <img
+    src={`${src}?color=black&height=${height}`}
+    class="dark:hidden"
+    alt=""
+    width={width}
+    height={height}
+  />
+  <img
+    src={`${src}?color=white&height=${height}`}
+    class="not-dark:hidden"
+    alt=""
+    width={width}
+    height={height}
+  />
+</span>
