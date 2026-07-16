@@ -2,12 +2,21 @@ import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
 import { authClient } from "@repo/auth/auth-client";
 import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { GalleryVerticalEndIcon, LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import * as v from "valibot";
 
 import { SignInSocialButton } from "#/components/sign-in-social-button";
 
@@ -15,10 +24,30 @@ export const Route = createFileRoute("/_guest/signup")({
   component: SignupForm,
 });
 
+const SignupSchema = v.pipe(
+  v.object({
+    name: v.pipe(v.string(), v.trim(), v.minLength(1, "Please enter your name.")),
+    email: v.pipe(v.string(), v.email("Enter a valid email address.")),
+    password: v.pipe(v.string(), v.minLength(8, "Must be at least 8 characters long.")),
+    confirmPassword: v.string(),
+  }),
+  v.forward(
+    v.partialCheck(
+      [["password"], ["confirmPassword"]],
+      (input) => input.password === input.confirmPassword,
+      "Passwords do not match.",
+    ),
+    ["confirmPassword"],
+  ),
+);
+
+type FieldErrors = Partial<Record<keyof v.InferInput<typeof SignupSchema>, string>>;
+
 function SignupForm() {
   const { redirectUrl } = Route.useRouteContext();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [errors, setErrors] = useState<FieldErrors>({});
 
   const { mutate: signupMutate, isPending } = useMutation({
     mutationFn: async (data: { name: string; email: string; password: string }) => {
@@ -45,110 +74,133 @@ function SignupForm() {
     if (isPending) return;
 
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirm_password") as string;
+    const result = v.safeParse(SignupSchema, {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirm_password"),
+    });
 
-    if (!name || !email || !password || !confirmPassword) return;
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
+    if (!result.success) {
+      const flat = v.flatten<typeof SignupSchema>(result.issues);
+      setErrors({
+        name: flat.nested?.name?.[0],
+        email: flat.nested?.email?.[0],
+        password: flat.nested?.password?.[0],
+        confirmPassword: flat.nested?.confirmPassword?.[0],
+      });
       return;
     }
 
+    setErrors({});
+    const { name, email, password } = result.output;
     signupMutate({ name, email, password });
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col items-center gap-2">
-            <Link to="/" className="flex flex-col items-center gap-2 font-medium">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                <GalleryVerticalEndIcon className="size-6" />
-              </div>
-              <span className="sr-only">Acme Inc.</span>
-            </Link>
-            <h1 className="text-xl font-bold">Sign up for Acme Inc.</h1>
-          </div>
-          <div className="flex flex-col gap-5">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl">Create an account</CardTitle>
+        <CardDescription>Enter your information below to create your account</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="grid gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Full Name</Label>
               <Input
                 id="name"
                 name="name"
                 type="text"
                 placeholder="John Doe"
                 readOnly={isPending}
-                required
+                aria-invalid={!!errors.name}
               />
+              {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="hello@example.com"
+                placeholder="m@example.com"
                 readOnly={isPending}
-                required
+                aria-invalid={!!errors.email}
               />
+              {errors.email ? (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  We&apos;ll use this to contact you. We will not share your email with anyone
+                  else.
+                </p>
+              )}
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 name="password"
                 type="password"
-                placeholder="Password"
                 readOnly={isPending}
-                required
+                aria-invalid={!!errors.password}
               />
+              {errors.password ? (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">Must be at least 8 characters long.</p>
+              )}
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="confirm_password">Confirm Password</Label>
               <Input
                 id="confirm_password"
                 name="confirm_password"
                 type="password"
-                placeholder="Confirm Password"
                 readOnly={isPending}
-                required
+                aria-invalid={!!errors.confirmPassword}
+              />
+              {errors.confirmPassword ? (
+                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">Please confirm your password.</p>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending && <LoaderCircleIcon className="animate-spin" />}
+                {isPending ? "Creating account..." : "Create Account"}
+              </Button>
+              <SignInSocialButton
+                provider="github"
+                label="Sign up with"
+                callbackURL={redirectUrl}
+                disabled={isPending}
+                icon={<SiGithub className="size-4" />}
+              />
+              <SignInSocialButton
+                provider="google"
+                label="Sign up with"
+                callbackURL={redirectUrl}
+                disabled={isPending}
+                icon={<SiGoogle className="size-4" />}
               />
             </div>
-            <Button type="submit" className="mt-2 w-full" size="lg" disabled={isPending}>
-              {isPending && <LoaderCircleIcon className="animate-spin" />}
-              {isPending ? "Signing up..." : "Sign up"}
-            </Button>
-          </div>
-          <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-            <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <SignInSocialButton
-              provider="github"
-              callbackURL={redirectUrl}
-              disabled={isPending}
-              icon={<SiGithub className="size-4" />}
-            />
-            <SignInSocialButton
-              provider="google"
-              callbackURL={redirectUrl}
-              disabled={isPending}
-              icon={<SiGoogle className="size-4" />}
-            />
-          </div>
-        </div>
-      </form>
 
-      <div className="text-center text-sm">
-        Already have an account?{" "}
-        <Link to="/login" className="underline underline-offset-4">
-          Login
-        </Link>
-      </div>
-    </div>
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <Link to="/login" className="underline underline-offset-4">
+                Sign in
+              </Link>
+            </div>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

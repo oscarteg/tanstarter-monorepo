@@ -8,6 +8,8 @@ interface SocialLoginButtonProps {
   icon: React.ReactNode;
   disabled?: boolean;
   callbackURL: string;
+  /** Leading verb for the button label, e.g. "Login with" (default) or "Sign up with". */
+  label?: string;
 }
 
 export function SignInSocialButton(props: SocialLoginButtonProps) {
@@ -40,7 +42,7 @@ export function SignInSocialButton(props: SocialLoginButtonProps) {
       onClick={() => mutation.mutate()}
     >
       {props.icon}
-      Login with {providerLabel}
+      {props.label ?? "Login with"} {providerLabel}
     </Button>
   );
 }
