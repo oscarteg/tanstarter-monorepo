@@ -27,7 +27,9 @@ A feature module (a package under `packages/`) owns its data:
   import { pgTable, text } from "drizzle-orm/pg-core";
 
   export const note = pgTable("note", {
-    id: text().primaryKey().$defaultFn(() => nanoid()),
+    id: text()
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
     userId: text()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),

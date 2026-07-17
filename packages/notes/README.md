@@ -6,14 +6,14 @@ registry. Copy it, rename it, adapt it — or delete it.
 
 ## Anatomy
 
-| File | Responsibility |
-| --- | --- |
-| `src/schema.ts` | Drizzle table(s), user-owned, referencing the core `user` from `@repo/db/schema`. Picked up by drizzle-kit via the `../*/src/schema.ts` glob. |
-| `src/data.ts` | Queries/commands via the shared `db` client from `@repo/db` (the single DB entry point). |
-| `src/server.ts` | TanStack Start server functions, guarded by `authMiddleware` (injects `context.user`) and validated with Valibot. |
-| `src/ui/*` | Screens built from `@repo/ui` (Rams components). |
-| `src/routes.tsx` | Route factory `(parent) => Route[]`, mounted under `/app`. |
-| `src/index.tsx` | The single entry point: exports the module object (`id`, `title`, `enabled`, `nav`, `routes`). |
+| File             | Responsibility                                                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/schema.ts`  | Drizzle table(s), user-owned, referencing the core `user` from `@repo/db/schema`. Picked up by drizzle-kit via the `../*/src/schema.ts` glob. |
+| `src/data.ts`    | Queries/commands via the shared `db` client from `@repo/db` (the single DB entry point).                                                      |
+| `src/server.ts`  | TanStack Start server functions, guarded by `authMiddleware` (injects `context.user`) and validated with Valibot.                             |
+| `src/ui/*`       | Screens built from `@repo/ui` (Rams components).                                                                                              |
+| `src/routes.tsx` | Route factory `(parent) => Route[]`, mounted under `/app`.                                                                                    |
+| `src/index.tsx`  | The single entry point: exports the module object (`id`, `title`, `enabled`, `nav`, `routes`).                                                |
 
 ## Enable / disable
 

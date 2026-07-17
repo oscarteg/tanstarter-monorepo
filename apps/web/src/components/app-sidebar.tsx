@@ -154,11 +154,7 @@ function NavMain() {
           const Icon = item.icon;
           const isActive = item.items?.some((sub) => sub.url === pathname) ?? false;
           return (
-            <Collapsible
-              key={item.title}
-              defaultOpen={isActive}
-              className="group/collapsible"
-            >
+            <Collapsible key={item.title} defaultOpen={isActive} className="group/collapsible">
               <SidebarMenuItem>
                 <CollapsibleTrigger
                   render={<SidebarMenuButton tooltip={item.title} isActive={isActive} />}
@@ -236,9 +232,7 @@ function NavProjects() {
                 <span>{item.name}</span>
               </SidebarMenuButton>
               <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={<SidebarMenuAction showOnHover />}
-                >
+                <DropdownMenuTrigger render={<SidebarMenuAction showOnHover />}>
                   <MoreHorizontalIcon />
                   <span className="sr-only">More</span>
                 </DropdownMenuTrigger>

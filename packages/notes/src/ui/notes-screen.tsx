@@ -141,7 +141,9 @@ export function NotesScreen() {
                   >
                     <span className="text-lg font-semibold text-foreground">{note.title}</span>
                     {note.body && (
-                      <span className="mt-0.5 block text-sm text-muted-foreground">{note.body}</span>
+                      <span className="mt-0.5 block text-sm text-muted-foreground">
+                        {note.body}
+                      </span>
                     )}
                   </button>
                 )}

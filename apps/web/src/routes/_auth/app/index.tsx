@@ -21,7 +21,11 @@ function AppIndex() {
       </div>
 
       <section>
-        <SectionHeader number="01" label="Getting started" action={{ label: "Docs ↗", href: "#" }} />
+        <SectionHeader
+          number="01"
+          label="Getting started"
+          action={{ label: "Docs ↗", href: "#" }}
+        />
         <Pipeline steps={["Clone", "Configure", "Add a module", "Ship"]} activeIndex={2} />
       </section>
 

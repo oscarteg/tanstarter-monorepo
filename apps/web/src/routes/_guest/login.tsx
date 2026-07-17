@@ -141,7 +141,7 @@ function LoginForm() {
         </CardContent>
       </Card>
 
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary">
+      <div className="text-center text-xs text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary">
         By clicking continue, you agree to our <a href={authConfig.termsUrl}>Terms of Service</a>{" "}
         and <a href={authConfig.privacyUrl}>Privacy Policy</a>.
       </div>

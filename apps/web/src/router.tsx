@@ -6,6 +6,7 @@ import { DefaultCatchBoundary } from "#/components/default-catch-boundary";
 import { DefaultNotFound } from "#/components/default-not-found";
 import { enabledModules } from "#/modules/registry";
 
+import { Route as rootRoute } from "./routes/__root";
 // File-based routes stay the source of truth for each route's definition. The
 // tree spine is assembled here so enabled modules can inject their routes under
 // the /app shell (see modules/registry.ts). routeTree.gen.ts still provides the
@@ -13,12 +14,11 @@ import { enabledModules } from "#/modules/registry";
 import { Route as appIndexRoute } from "./routes/_auth/app/index";
 import { Route as appRoute } from "./routes/_auth/app/route";
 import { Route as authRoute } from "./routes/_auth/route";
-import { Route as guestRoute } from "./routes/_guest/route";
 import { Route as loginRoute } from "./routes/_guest/login";
+import { Route as guestRoute } from "./routes/_guest/route";
 import { Route as signupRoute } from "./routes/_guest/signup";
 import { Route as apiAuthRoute } from "./routes/api/auth/$";
 import { Route as indexRoute } from "./routes/index";
-import { Route as rootRoute } from "./routes/__root";
 
 function buildRouteTree() {
   const moduleRoutes = enabledModules.flatMap((module) => module.routes(appRoute));

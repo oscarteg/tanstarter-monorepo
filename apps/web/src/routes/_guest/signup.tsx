@@ -133,8 +133,7 @@ function SignupForm() {
                 <p className="text-sm text-destructive">{errors.email}</p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  We&apos;ll use this to contact you. We will not share your email with anyone
-                  else.
+                  We&apos;ll use this to contact you. We will not share your email with anyone else.
                 </p>
               )}
             </div>
