@@ -1,37 +1,62 @@
 @import "tailwindcss";
 
-/* Self-hosted fonts. Swap these imports and the `--font-*` tokens below to
-   re-typeface the whole site. */
-@import "@fontsource-variable/inter";
-@import "@fontsource/instrument-serif";
+/* Rams Document design tokens — the shared language with @repo/ui / apps/web.
+   Imported after Tailwind so the DS `--font-*` values win over Tailwind's
+   defaults. Swap the token files to re-theme; swap the font imports below to
+   re-typeface. */
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
 
-@theme {
-  --font-display: "Instrument Serif", serif;
-  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
-
-  --color-olive-50: oklch(98.8% 0.003 106.5);
-  --color-olive-100: oklch(96.6% 0.005 106.5);
-  --color-olive-200: oklch(93% 0.007 106.5);
-  --color-olive-300: oklch(88% 0.011 106.6);
-  --color-olive-400: oklch(73.7% 0.021 106.9);
-  --color-olive-500: oklch(58% 0.031 107.3);
-  --color-olive-600: oklch(46.6% 0.025 107.3);
-  --color-olive-700: oklch(39.4% 0.023 107.4);
-  --color-olive-800: oklch(28.6% 0.016 107.4);
-  --color-olive-900: oklch(22.8% 0.013 107.4);
-  --color-olive-950: oklch(15.3% 0.006 107.1);
-}
+/* Self-hosted webfonts: Archivo (grotesk, stands in for Helvetica Neue) +
+   Space Mono (labels, numbers, metadata). Both come from the workspace catalog. */
+@import "@fontsource-variable/archivo";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
 @layer base {
   html {
+    background: var(--surface-page);
+    color: var(--text-body);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-olive-100);
-    --scroll-padding-top: 0;
-    scroll-padding-top: var(--scroll-padding-top);
+    scroll-behavior: smooth;
+  }
 
-    @variant dark {
-      background-color: var(--color-olive-950);
-    }
+  ::selection {
+    background: var(--accent-tint);
+  }
+
+  a {
+    color: var(--link);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+}
+
+/* Heading-coloured links (nav, cards, footer) — ink at rest, accent on hover,
+   matching the source `.om-link-heading` helper. */
+.om-link-heading {
+  color: var(--text-heading);
+}
+
+.om-link-heading:hover {
+  color: var(--accent-fg);
+}
+
+/* Shared page container — the source's 1200px content column with a 40px rail. */
+.rams-wrap {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 40px;
+}
+
+@media (max-width: 720px) {
+  .rams-wrap {
+    padding-inline: 24px;
   }
 }

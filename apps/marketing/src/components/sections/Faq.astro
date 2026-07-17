@@ -1,0 +1,115 @@
+---
+import { home } from "../../config/home";
+
+const { faqs } = home;
+---
+
+<section id="faq" class="rams-wrap faq">
+  <div class="faq-grid">
+    <h2 class="block-title">{faqs.headline}</h2>
+
+    <div class="faq-list">
+      {
+        faqs.items.map((item, index) => (
+          <details class="faq-item" open={index === 0}>
+            <summary class="faq-q">
+              <span class="faq-text">{item.question}</span>
+              <span class="faq-sign" aria-hidden="true" />
+            </summary>
+            <div class="faq-a">
+              <p>{item.answer}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-block: 120px 0;
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 56px;
+  }
+
+  .block-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(28px, 3.2vw, 38px);
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .faq-q {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: left;
+    padding: 22px 4px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-text {
+    flex: 1;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--text-heading);
+  }
+
+  .faq-sign {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: var(--text-muted);
+    width: 20px;
+    text-align: center;
+  }
+
+  .faq-sign::before {
+    content: "+";
+  }
+
+  .faq-item[open] .faq-sign::before {
+    content: "–";
+  }
+
+  .faq-a {
+    padding: 0 4px 24px 4px;
+  }
+
+  .faq-a p {
+    font: var(--text-body);
+    color: var(--text-muted);
+    margin: 0;
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 860px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

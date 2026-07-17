@@ -1,0 +1,34 @@
+---
+import { home } from "../../config/home";
+
+const { logos } = home;
+---
+
+<section class="rams-wrap logos">
+  <div class="logo-row">
+    {logos.map((logo) => <span class="logo">{logo}</span>)}
+  </div>
+</section>
+
+<style>
+  .logos {
+    padding-block: 56px 8px;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 32px;
+    opacity: 0.7;
+  }
+
+  .logo {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--text-muted);
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+import { site } from "../../config/site";
+
+const { name, nav, actions } = site;
+---
+
+<header class="site-header">
+  <nav class="rams-wrap nav">
+    <div class="nav-links">
+      {
+        nav.map((link) => (
+          <a href={link.href} class="om-link-heading">
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <a href="/" class="brand" aria-label={name}>
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </span>
+      <span class="brand-name">{name}<span class="brand-dot">.</span></span>
+    </a>
+
+    <div class="nav-actions">
+      <a href={actions.login.href} class="om-link-heading nav-login">{actions.login.label}</a>
+      <a href={actions.getStarted.href} class="nav-cta">{actions.getStarted.label}</a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .nav {
+    padding-block: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font: var(--text-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nav-links a {
+    color: var(--text-body);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    justify-self: center;
+    color: var(--text-heading);
+  }
+
+  .brand-mark {
+    width: 26px;
+    height: 26px;
+    background: var(--ink);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+  }
+
+  .brand-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+  }
+
+  .brand-dot {
+    color: var(--accent-fg);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-self: end;
+  }
+
+  .nav-login {
+    font: var(--text-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-body);
+  }
+
+  .nav-cta {
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--on-ink);
+    padding: 11px 18px;
+    border-radius: 2px;
+  }
+
+  .nav-cta:hover {
+    color: var(--on-ink);
+    background: var(--accent-press);
+  }
+
+  /* Below the content column: collapse to brand + primary action. */
+  @media (max-width: 720px) {
+    .nav {
+      grid-template-columns: auto 1fr;
+    }
+    .nav-links,
+    .nav-login {
+      display: none;
+    }
+    .brand {
+      justify-self: start;
+    }
+  }
+</style>

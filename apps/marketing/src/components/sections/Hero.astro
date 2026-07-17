@@ -1,0 +1,158 @@
+---
+import { home } from "../../config/home";
+
+const { hero, announcement, showAnnouncement } = home;
+---
+
+<section class="rams-wrap hero">
+  {
+    showAnnouncement && (
+      <a href={announcement.href} class="announce">
+        <span class="announce-text">{announcement.text}</span>
+        <span class="announce-cta">{announcement.cta} →</span>
+      </a>
+    )
+  }
+
+  <h1 class="hero-title">{hero.headline}</h1>
+  <p class="hero-lead">{hero.subheadline}</p>
+
+  <div class="hero-actions">
+    <a href={hero.primaryCta.href} class="btn-solid">{hero.primaryCta.label}</a>
+    <a href={hero.secondaryCta.href} class="om-link-heading btn-plain">{hero.secondaryCta.label} →</a>
+  </div>
+
+  <div class="hero-frame" style={`--hero-frame:${hero.frameColor}`}>
+    <div class="hero-shot">
+      <img src={hero.image.src} alt={hero.image.alt} width="1670" height="1114" loading="eager" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 76px 0;
+  }
+
+  .announce {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--border-hairline);
+    background: var(--surface-card);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 34px;
+  }
+
+  .announce-text {
+    padding: 7px 13px;
+    font: var(--text-mono-sm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-body);
+  }
+
+  .announce-cta {
+    padding: 7px 13px;
+    font: var(--text-mono-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-fg);
+    border-left: 1px solid var(--border-hairline);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .hero-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(40px, 5.6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-heading);
+    margin: 0;
+    max-width: 15ch;
+    text-wrap: balance;
+  }
+
+  .hero-lead {
+    font: var(--text-lead);
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 24px 0 0 0;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-top: 34px;
+  }
+
+  .btn-solid {
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--on-ink);
+    padding: 14px 24px;
+    border-radius: 2px;
+  }
+
+  .btn-solid:hover {
+    color: var(--on-ink);
+    background: var(--accent-press);
+  }
+
+  .btn-plain {
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-heading);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .hero-frame {
+    margin-top: 64px;
+    background: var(--hero-frame);
+    border: 1px solid var(--border-hairline);
+    padding: 38px 38px 0 38px;
+  }
+
+  .hero-shot {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-float);
+    background: var(--surface-page);
+    overflow: hidden;
+    height: 560px;
+  }
+
+  .hero-shot img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  @media (max-width: 720px) {
+    .hero-frame {
+      padding: 20px 20px 0 20px;
+    }
+    .hero-shot {
+      height: 340px;
+    }
+    .hero-actions {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,127 @@
+---
+import { home } from "../../config/home";
+
+const { features } = home;
+---
+
+<section id="features" class="rams-wrap features">
+  <div class="kicker">{features.eyebrow}</div>
+  <h2 class="section-title">{features.headline}</h2>
+  <p class="section-lead">{features.subheadline}</p>
+
+  <div class="feature-grid">
+    {
+      features.items.map((item) => (
+        <div class="feature-card">
+          <div class="feature-media" style={`--tint:${item.tint}`}>
+            <img src={item.image.src} alt={item.image.alt} width="1200" height="600" loading="lazy" />
+          </div>
+          <div class="feature-body">
+            <h3 class="feature-title">{item.title}</h3>
+            <p class="feature-text">{item.body}</p>
+            <a href={item.cta.href} class="om-link-heading feature-link">
+              {item.cta.label} →
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .features {
+    padding-block: 100px 0;
+  }
+
+  .kicker {
+    font: var(--text-kicker);
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--accent-fg);
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(30px, 3.6vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    margin: 16px 0 0 0;
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+
+  .section-lead {
+    font: var(--text-body-lg);
+    color: var(--text-muted);
+    margin: 18px 0 0 0;
+    max-width: 56ch;
+    text-wrap: pretty;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 44px;
+  }
+
+  .feature-card {
+    border: 1px solid var(--border-hairline);
+    background: var(--surface-card);
+  }
+
+  .feature-media {
+    background: var(--tint);
+    padding: 26px 26px 0 26px;
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .feature-media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top;
+    box-shadow: var(--shadow-float);
+  }
+
+  .feature-body {
+    padding: 24px 26px 26px 26px;
+  }
+
+  .feature-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .feature-text {
+    font: var(--text-body);
+    color: var(--text-muted);
+    margin: 10px 0 0 0;
+    max-width: 46ch;
+  }
+
+  .feature-link {
+    display: inline-block;
+    margin-top: 18px;
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-heading);
+  }
+
+  @media (max-width: 860px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

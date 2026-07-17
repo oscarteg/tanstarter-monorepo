@@ -18,9 +18,6 @@ catalogs:
     '@fontsource-variable/archivo':
       specifier: 5.2.8
       version: 5.2.8
-    '@fontsource-variable/inter':
-      specifier: 5.2.8
-      version: 5.2.8
     '@fontsource/space-mono':
       specifier: 5.2.9
       version: 5.2.9
@@ -179,18 +176,15 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.7.3
         version: 3.7.3
-      '@fontsource-variable/inter':
+      '@fontsource-variable/archivo':
         specifier: 'catalog:'
         version: 5.2.8
-      '@fontsource/instrument-serif':
-        specifier: 5.2.8
-        version: 5.2.8
+      '@fontsource/space-mono':
+        specifier: 'catalog:'
+        version: 5.2.9
       '@tailwindcss/vite':
         specifier: 'catalog:'
         version: 4.3.3(vite@8.1.4(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0))
-      '@tailwindplus/elements':
-        specifier: 1.0.22
-        version: 1.0.22
       astro:
         specifier: ^7.0.9
         version: 7.0.9(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@26.1.1)(db0@0.3.4)(jiti@2.7.0)(typescript@7.0.2)
@@ -1346,12 +1340,6 @@ packages:
   '@fontsource-variable/archivo@5.2.8':
     resolution: {integrity: sha512-R8EotpKHEsKv7d7oiUyjyPENRi2gtAlwdTlzDCOs5BfX/LJP7jvUYJ4fF/qyd3rnbgk3r1xp33g1P57bYJfhzQ==}
 
-  '@fontsource-variable/inter@5.2.8':
-    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
-
-  '@fontsource/instrument-serif@5.2.8':
-    resolution: {integrity: sha512-s+bkz+syj2rO00Rmq9g0P+PwuLig33DR1xDR8pTWmovH1pUjwnncrFk++q9mmOex8fUQ7oW80gPpPDaw7V1MMw==}
-
   '@fontsource/space-mono@5.2.9':
     resolution: {integrity: sha512-b61faFOHEISQ/pD25G+cfGY9o/WW6lRv6hBQQfpWvEJ4y1V+S4gmth95EVyBE2VL3qDYHeVQ8nBzrplzdXTDDg==}
 
@@ -2340,9 +2328,6 @@ packages:
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
-
-  '@tailwindplus/elements@1.0.22':
-    resolution: {integrity: sha512-rpUVblTefHInmbanTreDqxkjGYV+S44EOIJS1UtyvY1+tn5PbdOkUkWar8cjkEZpCDPAXbswtF0tuxEkX3jk0g==}
 
   '@tanstack/devtools-a11y@0.1.6':
     resolution: {integrity: sha512-vF1nv2kDlXIfKQ65x6GyW+NVdJwTiBQ9/PxJxJz+jT5U/saZrg1j7DSRSGIgo67oIO6oa4bIXem3AiBSq0f1Ew==}
@@ -6966,10 +6951,6 @@ snapshots:
 
   '@fontsource-variable/archivo@5.2.8': {}
 
-  '@fontsource-variable/inter@5.2.8': {}
-
-  '@fontsource/instrument-serif@5.2.8': {}
-
   '@fontsource/space-mono@5.2.9': {}
 
   '@hono/node-server@1.19.14(hono@4.12.30)':
@@ -7651,8 +7632,6 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 8.1.4(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)
-
-  '@tailwindplus/elements@1.0.22': {}
 
   '@tanstack/devtools-a11y@0.1.6(@types/react@19.2.17)(csstype@3.2.3)(react@19.2.7)(solid-js@1.9.14)':
     dependencies:

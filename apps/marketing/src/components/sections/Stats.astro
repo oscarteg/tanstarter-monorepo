@@ -1,0 +1,120 @@
+---
+import { home } from "../../config/home";
+
+const { stats } = home;
+---
+
+<section class="rams-wrap stats">
+  <div class="kicker">{stats.eyebrow}</div>
+  <h2 class="section-title">{stats.headline}</h2>
+  <p class="section-lead">{stats.subheadline}</p>
+
+  <div class="stats-grid">
+    <div class="stat-list">
+      {
+        stats.items.map((item) => (
+          <div>
+            <div class="stat-value">{item.value}</div>
+            <div class="stat-text">{item.text}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="chart">
+      <svg viewBox="0 0 900 300" width="100%" height="240" preserveAspectRatio="none">
+        <g stroke="var(--border-hairline)" stroke-width="1" stroke-dasharray="3 5">
+          <line x1="112" y1="0" x2="112" y2="300"></line>
+          <line x1="225" y1="0" x2="225" y2="300"></line>
+          <line x1="337" y1="0" x2="337" y2="300"></line>
+          <line x1="450" y1="0" x2="450" y2="300"></line>
+          <line x1="562" y1="0" x2="562" y2="300"></line>
+          <line x1="675" y1="0" x2="675" y2="300"></line>
+          <line x1="787" y1="0" x2="787" y2="300"></line>
+        </g>
+        <path
+          d="M0,292 C220,286 380,262 560,180 C700,118 820,52 900,14"
+          fill="none"
+          stroke="var(--ink-soft)"
+          stroke-width="2"></path>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding-block: 110px 0;
+  }
+
+  .kicker {
+    font: var(--text-kicker);
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--accent-fg);
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(30px, 3.6vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    margin: 16px 0 0 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .section-lead {
+    font: var(--text-body-lg);
+    color: var(--text-muted);
+    margin: 18px 0 0 0;
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 56px;
+    margin-top: 56px;
+    align-items: end;
+  }
+
+  .stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 44px;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+  }
+
+  .stat-text {
+    font: var(--text-small);
+    color: var(--text-muted);
+    margin-top: 8px;
+    max-width: 34ch;
+  }
+
+  .chart {
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .chart svg {
+    display: block;
+  }
+
+  @media (max-width: 860px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

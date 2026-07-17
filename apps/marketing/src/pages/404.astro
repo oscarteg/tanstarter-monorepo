@@ -1,8 +1,4 @@
 ---
-import Link from "../components/elements/Link.astro";
-import Main from "../components/elements/Main.astro";
-import ArrowNarrowRightIcon from "../components/icons/ArrowNarrowRightIcon.astro";
-import HeroSimpleCentered from "../components/sections/HeroSimpleCentered.astro";
 import { site } from "../config/site";
 import Layout from "../layouts/Layout.astro";
 
@@ -10,11 +6,61 @@ const { notFound } = site;
 ---
 
 <Layout title={notFound.title} description={notFound.subheadline} noindex>
-  <Main>
-    <HeroSimpleCentered headline={notFound.headline} subheadline={notFound.subheadline}>
-      <Link slot="cta" href={notFound.cta.href}>
-        {notFound.cta.label} <ArrowNarrowRightIcon />
-      </Link>
-    </HeroSimpleCentered>
-  </Main>
+  <section class="rams-wrap notfound">
+    <div class="kicker">Error 404</div>
+    <h1 class="notfound-title">{notFound.headline}</h1>
+    <p class="notfound-lead">{notFound.subheadline}</p>
+    <a href={notFound.cta.href} class="btn-solid">{notFound.cta.label} →</a>
+  </section>
 </Layout>
+
+<style>
+  .notfound {
+    padding-block: 120px 160px;
+  }
+
+  .kicker {
+    font: var(--text-kicker);
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--accent-fg);
+  }
+
+  .notfound-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(40px, 5.6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-heading);
+    margin: 16px 0 0 0;
+    text-wrap: balance;
+  }
+
+  .notfound-lead {
+    font: var(--text-lead);
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 20px 0 34px 0;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+
+  .btn-solid {
+    display: inline-block;
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--on-ink);
+    padding: 14px 24px;
+    border-radius: 2px;
+  }
+
+  .btn-solid:hover {
+    color: var(--on-ink);
+    background: var(--accent-press);
+  }
+</style>

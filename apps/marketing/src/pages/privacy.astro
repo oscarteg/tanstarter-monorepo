@@ -1,7 +1,5 @@
 ---
 import { getEntry, render } from "astro:content";
-import Main from "../components/elements/Main.astro";
-import DocumentCentered from "../components/sections/DocumentCentered.astro";
 import Layout from "../layouts/Layout.astro";
 
 const entry = await getEntry("pages", "privacy");
@@ -12,9 +10,85 @@ const { title, subheadline, description } = entry.data;
 ---
 
 <Layout title={title} description={description}>
-  <Main>
-    <DocumentCentered id="document" headline={title} subheadline={subheadline}>
+  <article class="rams-wrap document">
+    <header class="document-head">
+      <h1 class="document-title">{title}</h1>
+      {subheadline && <p class="document-lead">{subheadline}</p>}
+    </header>
+    <div class="prose">
       <Content />
-    </DocumentCentered>
-  </Main>
+    </div>
+  </article>
 </Layout>
+
+<style>
+  .document {
+    padding-block: 76px 120px;
+    max-width: 760px;
+  }
+
+  .document-head {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  .document-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-heading);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .document-lead {
+    font: var(--text-mono);
+    letter-spacing: 0.04em;
+    color: var(--text-meta);
+    margin: 16px 0 0 0;
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text-heading);
+    margin: 40px 0 0 0;
+  }
+
+  .prose :global(p) {
+    font: var(--text-body-lg);
+    color: var(--text-body);
+    margin: 16px 0 0 0;
+    max-width: 64ch;
+  }
+
+  .prose :global(ul) {
+    margin: 16px 0 0 0;
+    padding-left: 20px;
+    max-width: 64ch;
+  }
+
+  .prose :global(li) {
+    font: var(--text-body-lg);
+    color: var(--text-body);
+    margin-top: 6px;
+  }
+
+  .prose :global(a) {
+    color: var(--link);
+  }
+
+  .prose :global(a:hover) {
+    color: var(--link-hover);
+  }
+
+  .prose :global(strong) {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+</style>

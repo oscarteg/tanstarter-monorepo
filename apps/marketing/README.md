@@ -1,8 +1,9 @@
 # @repo/marketing
 
-The static marketing site: a Tailwind Plus "Oatmeal" kit ported to Astro. It
-builds to plain HTML with no server runtime, and ships `/`, `/about`,
-`/pricing`, `/privacy` and a `404`.
+The static marketing site: a single-page "Rams Document" home reproduced in
+Astro. It builds to plain HTML with no server runtime, and ships `/` (the whole
+marketing story, with `#features` / `#faq` / `#pricing` anchors), a minimal
+`/privacy`, and a `404`.
 
 ```sh
 vp run --filter=@repo/marketing dev      # local dev server
@@ -10,21 +11,34 @@ vp run --filter=@repo/marketing build    # static build into dist/
 vp run --filter=@repo/marketing preview  # serve the built site
 ```
 
+## Design language
+
+The site shares the **Rams Document** design language with the app (`@repo/ui` /
+`apps/web`): warm paper, near-black ink, a single restrained Braun-orange accent,
+hairline rules, square corners, Archivo (grotesk) + Space Mono (labels). Light
+and dark both work; the theme is applied via `[data-theme]` on `<html>`, set from
+the OS colour scheme by a tiny inline script in `src/layouts/Layout.astro`.
+
+Sections are re-authored as `.astro` components under
+`src/components/sections/` (Header, Hero, Logos, Features, Stats, Testimonials,
+Faq, Pricing, Cta, Footer). Each uses a scoped `<style>` bound to the design
+tokens — there is no React and no inline-style objects.
+
 ## Re-theming for a new project
 
 Everything you need to change lives in `src/config/` and `src/content/`. You
 should not have to touch component markup to launch a new brand.
 
-| What                                            | Where                     |
-| ----------------------------------------------- | ------------------------- |
-| Brand name, logo, nav, footer links, socials    | `src/config/site.ts`      |
-| Newsletter copy, fineprint, 404 copy            | `src/config/site.ts`      |
-| SEO defaults: title template, description, OG   | `src/config/site.ts`      |
-| Plans, prices, features, comparison table       | `src/config/pricing.ts`   |
-| Home hero, features, testimonials, CTA          | `src/config/home.ts`      |
-| Team roster, contact CTA                        | `src/config/about.ts`     |
-| Stats, FAQs, client logos, featured testimonial | `src/config/shared.ts`    |
-| About and privacy prose                         | `src/content/pages/*.mdx` |
+| What                                              | Where                     |
+| ------------------------------------------------- | ------------------------- |
+| Brand name, nav, footer links, socials            | `src/config/site.ts`      |
+| Newsletter copy, fineprint, 404 copy              | `src/config/site.ts`      |
+| SEO defaults: title template, description, OG      | `src/config/site.ts`      |
+| Announcement, hero, logos, features               | `src/config/home.ts`      |
+| Stats, testimonials, FAQs                         | `src/config/home.ts`      |
+| Pricing tiers                                     | `src/config/home.ts`      |
+| Final CTA                                         | `src/config/home.ts`      |
+| Privacy prose                                     | `src/content/pages/*.mdx` |
 
 Each config module is typed, so a missing or misspelled field is a build error
 rather than a blank section.
@@ -38,38 +52,32 @@ it — the types will tell you when you've covered everything.
   nothing ships one, so social previews 404 until you add it. Point
   `defaultImage` elsewhere if you'd rather.
 - **Replace `public/favicon.svg`** — it's a neutral placeholder mark.
+- **Replace `public/uploads/*.png`** — the demo product screenshots referenced by
+  `home.hero.image` and `home.features[].image`.
 - **Set `site` in `astro.config.mjs`** and the `Sitemap:` line in
   `public/robots.txt` to your real origin.
 
 ### Colours and fonts
 
-`src/styles/global.css` holds the Tailwind v4 `@theme`: the `olive-*` palette
-and the `--font-display` / `--font-sans` tokens. Fonts are self-hosted via
-Fontsource (`@fontsource/instrument-serif`, `@fontsource-variable/inter`) —
-swap the imports and the two tokens to re-typeface the whole site.
+Design tokens live in `src/styles/tokens/{colors,typography,spacing}.css` and are
+imported by `src/styles/global.css`. The values are kept identical to
+`packages/ui/styles/base.css`, so the marketing site and the app stay visually in
+sync — edit both together. Fonts are self-hosted via Fontsource
+(`@fontsource-variable/archivo`, `@fontsource/space-mono`); swap the imports in
+`global.css` and the `--font-*` tokens to re-typeface.
 
 ### Editing prose
 
-`/about` and `/privacy` render MDX from `src/content/pages/`. Frontmatter is
-validated by the schema in `src/content.config.ts`:
+`/privacy` renders MDX from `src/content/pages/`. Frontmatter is validated by the
+schema in `src/content.config.ts`:
 
 - `title` becomes the page's single `<h1>`
 - `description` becomes the meta/OG description
-- `subheadline` is the lead paragraph
-- `photo` is the about hero image
-- `proseHeadline` titles the prose section
+- `subheadline` is the lead line under the title
 
-The body is plain markdown. It renders through the `Document` element, which
-supplies the typography, so authors never write classes. Add another prose page
-by dropping in a new `.mdx` file and a matching route in `src/pages/`.
-
-## Page variants
-
-The upstream kit ships `-02` / `-03` variants of every page and ~38 sections;
-only what the `-01` pages needed was ported (YAGNI). To adopt a different
-variant, port the corresponding section from the kit into
-`src/components/sections/` and swap it into the relevant page — the config feeds
-it the same data.
+The body is plain markdown, styled by the scoped `.prose` rules in
+`src/pages/privacy.astro`. Add another prose page by dropping in a new `.mdx`
+file and a matching route in `src/pages/`.
 
 ## Deployment, canonical URLs and the sitemap
 
@@ -82,9 +90,7 @@ Infrastructure and deploy config live in the `citadel` repo, not here.
 
 ## Notes
 
-- Interactive bits (mobile nav, FAQ accordion, pricing tabs) use
-  `@tailwindplus/elements` web components, registered by a single client script
-  in `src/layouts/Layout.astro`. There is no React on this site.
-- `@tailwindplus/elements` requires a commercial Tailwind Plus licence.
-- Remote images from `assets.tailwindplus.com` are plain `<img>` with explicit
-  dimensions. Point them at your own assets when you re-theme.
+- The FAQ accordion is native `<details>`/`<summary>` — no JavaScript, fully
+  accessible, styled to the Rams look.
+- The demo product screenshots are plain `<img>` with explicit dimensions.
+  Point them at your own assets when you re-theme.

@@ -1,7 +1,7 @@
 ---
 import Seo from "../components/Seo.astro";
 import Footer from "../components/sections/Footer.astro";
-import Navbar from "../components/sections/Navbar.astro";
+import Header from "../components/sections/Header.astro";
 import "../styles/global.css";
 
 type Props = {
@@ -16,22 +16,25 @@ const { title, description, image, noindex } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {/* Honour the OS colour scheme up front; the Rams tokens theme via [data-theme]. */}
+    <script is:inline>
+      document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    </script>
     <Seo title={title} description={description} image={image} noindex={noindex} />
   </head>
   <body>
-    <Navbar />
-    <slot />
+    <Header />
+    <main>
+      <slot />
+    </main>
     <Footer />
-
-    {/* Registers the <el-*> custom elements used by the nav, FAQs and pricing tabs. */}
-    <script>
-      import "@tailwindplus/elements";
-    </script>
   </body>
 </html>

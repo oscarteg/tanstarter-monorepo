@@ -1,93 +1,191 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-import type { SocialPlatform } from "../../config/site";
 import { site } from "../../config/site";
-import Container from "../elements/Container.astro";
-import ArrowNarrowRightIcon from "../icons/ArrowNarrowRightIcon.astro";
-import GitHubIcon from "../icons/social/GitHubIcon.astro";
-import XIcon from "../icons/social/XIcon.astro";
-import YouTubeIcon from "../icons/social/YouTubeIcon.astro";
 
-type Props = HTMLAttributes<"footer">;
-
-const { class: className, ...rest } = Astro.props;
-
-const socialIcons: Record<SocialPlatform, typeof XIcon> = {
-  x: XIcon,
-  github: GitHubIcon,
-  youtube: YouTubeIcon,
-};
+const { name, footer, social } = site;
+const fineprint = footer.fineprint.replace("%s", name);
 ---
 
-<footer class:list={["pt-16", className]} {...rest}>
-  <div class="bg-olive-950/2.5 py-16 text-olive-950 dark:bg-white/5 dark:text-white">
-    <Container class="flex flex-col gap-16">
-      <div class="grid grid-cols-1 gap-x-6 gap-y-16 text-sm/7 lg:grid-cols-2">
-        <form class="flex max-w-sm flex-col gap-2" action={site.newsletter.action}>
-          <p>{site.newsletter.headline}</p>
-          <div class="flex flex-col gap-4 text-olive-700 dark:text-olive-400">
-            <p>{site.newsletter.subheadline}</p>
-          </div>
-          <div
-            class="flex items-center border-b border-olive-950/20 py-2 has-[input:focus]:border-olive-950 dark:border-white/20 dark:has-[input:focus]:border-white"
-          >
-            <input
-              type="email"
-              placeholder="Email"
-              aria-label="Email"
-              class="flex-1 text-olive-950 focus:outline-hidden dark:text-white"
-            />
-            <button
-              type="submit"
-              aria-label="Subscribe"
-              class="relative inline-flex size-7 items-center justify-center rounded-full after:absolute after:-inset-2 hover:bg-olive-950/10 dark:hover:bg-white/10 after:pointer-fine:hidden"
-            >
-              <ArrowNarrowRightIcon />
-            </button>
-          </div>
-        </form>
+<footer class="site-footer">
+  <div class="rams-wrap footer-grid">
+    <div class="newsletter">
+      <div class="newsletter-title">{footer.newsletter.headline}</div>
+      <p class="newsletter-body">{footer.newsletter.body}</p>
+      <form class="newsletter-form" onsubmit="return false">
+        <input
+          type="email"
+          class="newsletter-input"
+          placeholder={footer.newsletter.placeholder}
+          aria-label={footer.newsletter.placeholder}
+        />
+        <button type="submit" class="newsletter-submit" aria-label="Subscribe">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </form>
+    </div>
 
-        <nav
-          class="grid grid-cols-2 gap-6 sm:has-[>:last-child:nth-child(3)]:grid-cols-3 sm:has-[>:nth-child(5)]:grid-cols-3 md:has-[>:last-child:nth-child(4)]:grid-cols-4 lg:max-xl:has-[>:last-child:nth-child(4)]:grid-cols-2"
-        >
-          {
-            site.footer.categories.map((category) => (
-              <div>
-                <h3>{category.title}</h3>
-                <ul role="list" class="mt-2 flex flex-col gap-2">
-                  {category.links.map((link) => (
-                    <li class="text-olive-700 dark:text-olive-400">
-                      <a href={link.href}>{link.label}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          }
-        </nav>
-      </div>
-      <div class="flex items-center justify-between gap-10 text-sm/7">
-        <div class="text-olive-600 dark:text-olive-500">{site.footer.fineprint}</div>
+    {
+      footer.columns.map((column) => (
+        <div>
+          <div class="col-title">{column.title}</div>
+          <div class="col-links">
+            {column.links.map((link) => (
+              <a href={link.href} class="om-link-heading foot-link">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="footer-bar">
+    <div class="rams-wrap footer-bar-inner">
+      <span class="copyright">{fineprint}</span>
+      <div class="social">
         {
-          site.social.length > 0 && (
-            <div class="flex items-center gap-4 sm:gap-10">
-              {site.social.map((link) => {
-                const Icon = socialIcons[link.platform];
-                return (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    aria-label={link.name}
-                    class="text-olive-950 *:size-6 dark:text-white"
-                  >
-                    <Icon />
-                  </a>
-                );
-              })}
-            </div>
-          )
+          social.map((link) => (
+            <a href={link.href} class="om-link-heading social-link" aria-label={link.name}>
+              {link.platform === "x" && (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.3H4.3L17.6 20.6Z" />
+                </svg>
+              )}
+              {link.platform === "github" && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 .5C5.4.5 0 5.9 0 12.6c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 24 12.6C24 5.9 18.6.5 12 .5Z" />
+                </svg>
+              )}
+              {link.platform === "youtube" && (
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" />
+                </svg>
+              )}
+            </a>
+          ))
         }
       </div>
-    </Container>
+    </div>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border-hairline);
+    background: var(--surface-card);
+  }
+
+  .footer-grid {
+    padding-block: 64px 40px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .newsletter-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-heading);
+  }
+
+  .newsletter-body {
+    font: var(--text-small);
+    color: var(--text-muted);
+    margin: 12px 0 18px 0;
+    max-width: 34ch;
+  }
+
+  .newsletter-form {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-page);
+    max-width: 300px;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 11px 13px;
+    font: var(--text-mono);
+    color: var(--text-heading);
+  }
+
+  .newsletter-submit {
+    border: none;
+    background: var(--ink);
+    color: var(--on-ink);
+    cursor: pointer;
+    padding: 11px 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .col-title {
+    font: var(--text-kicker);
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--text-meta);
+    margin-bottom: 16px;
+  }
+
+  .col-links {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .foot-link {
+    font: var(--text-small);
+    color: var(--text-body);
+  }
+
+  .footer-bar {
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .footer-bar-inner {
+    padding-block: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .copyright {
+    font: var(--text-mono-sm);
+    letter-spacing: 0.04em;
+    color: var(--text-meta);
+  }
+
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .social-link {
+    display: flex;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

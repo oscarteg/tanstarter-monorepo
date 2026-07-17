@@ -1,8 +1,9 @@
 /**
- * Brand, navigation and SEO defaults.
+ * Brand, navigation, footer and SEO defaults — the site "chrome" shared by
+ * every page.
  *
- * This file, its siblings in `src/config`, and the MDX in `src/content` are the
- * only places you should need to edit to re-theme this site for a new project.
+ * This file, its sibling `home.ts`, and the MDX in `src/content` are the only
+ * places you should need to edit to re-content this site for a new project.
  * Components read from here — never hardcode copy into markup.
  */
 
@@ -11,12 +12,12 @@ export type NavLink = {
   href: string;
 };
 
-export type FooterCategory = {
+export type FooterColumn = {
   title: string;
   links: NavLink[];
 };
 
-/** Keys map to the icons wired up in `src/components/sections/Footer.astro`. */
+/** Keys map to the inline icons wired up in `src/components/sections/Footer.astro`. */
 export type SocialPlatform = "x" | "github" | "youtube";
 
 export type SocialLink = {
@@ -26,25 +27,21 @@ export type SocialLink = {
   href: string;
 };
 
-export type Logo = {
-  /** Source used in light mode. */
-  light: string;
-  /** Source used in dark mode. */
-  dark: string;
-  alt: string;
-  width: number;
-  height: number;
-};
-
 export type SiteConfig = {
+  /** The brand name — rendered in the nav wordmark, footer and SEO. */
   name: string;
-  logo: Logo;
+  /** Logo URL used only for SEO/JSON-LD (the visible wordmark is text). */
+  logo: { light: string; dark: string; alt: string; width: number; height: number };
   nav: NavLink[];
-  actions: { secondary: NavLink; primary: NavLink };
-  notFound: { title: string; headline: string; subheadline: string; cta: NavLink };
-  footer: { categories: FooterCategory[]; fineprint: string };
-  newsletter: { headline: string; subheadline: string; action: string };
+  actions: { login: NavLink; getStarted: NavLink };
+  footer: {
+    newsletter: { headline: string; body: string; placeholder: string };
+    columns: FooterColumn[];
+    /** `%s` is replaced with the brand name. */
+    fineprint: string;
+  };
   social: SocialLink[];
+  notFound: { title: string; headline: string; subheadline: string; cta: NavLink };
   seo: {
     /** `%s` is replaced with the per-page title. */
     titleTemplate: string;
@@ -61,45 +58,43 @@ export const site: SiteConfig = {
   name: "Oatmeal",
 
   logo: {
-    light: "https://assets.tailwindplus.com/logos/oatmeal-instrument.svg?color=olive-950",
-    dark: "https://assets.tailwindplus.com/logos/oatmeal-instrument.svg?color=white",
+    light: "/favicon.svg",
+    dark: "/favicon.svg",
     alt: "Oatmeal",
-    width: 85,
-    height: 28,
+    width: 32,
+    height: 32,
   },
 
   nav: [
-    { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
-    { label: "Docs", href: "#" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "About", href: "#about" },
+    { label: "Docs", href: "#docs" },
   ],
 
   actions: {
-    secondary: { label: "Log in", href: "#" },
-    primary: { label: "Get started", href: "#" },
-  },
-
-  notFound: {
-    title: "Page not found",
-    headline: "Page not found",
-    subheadline: "Sorry, but the page you were looking for could not be found.",
-    cta: { label: "Go back home", href: "/" },
+    login: { label: "Log in", href: "#login" },
+    getStarted: { label: "Get started", href: "#start" },
   },
 
   footer: {
-    categories: [
+    newsletter: {
+      headline: "Stay in the loop",
+      body: "Get customer support tips, product updates and customer scores that you can archive as soon as they arrive.",
+      placeholder: "Email",
+    },
+    columns: [
       {
         title: "Product",
         links: [
-          { label: "Features", href: "/#features" },
-          { label: "Pricing", href: "/pricing" },
+          { label: "Features", href: "#features" },
+          { label: "Pricing", href: "#pricing" },
           { label: "Integrations", href: "#" },
         ],
       },
       {
         title: "Company",
         links: [
-          { label: "About", href: "/about" },
+          { label: "About", href: "#about" },
           { label: "Careers", href: "#" },
           { label: "Blog", href: "#" },
           { label: "Press Kit", href: "#" },
@@ -123,14 +118,7 @@ export const site: SiteConfig = {
         ],
       },
     ],
-    fineprint: "© 2025 Oatmeal, Inc.",
-  },
-
-  newsletter: {
-    headline: "Stay in the loop",
-    subheadline:
-      "Get customer support tips, product updates and customer stories that you can archive as soon as they arrive.",
-    action: "#",
+    fineprint: "© 2025 %s, Inc.",
   },
 
   social: [
@@ -139,11 +127,18 @@ export const site: SiteConfig = {
     { platform: "youtube", name: "YouTube", href: "https://www.youtube.com" },
   ],
 
+  notFound: {
+    title: "Page not found",
+    headline: "Page not found",
+    subheadline: "Sorry, but the page you were looking for could not be found.",
+    cta: { label: "Go back home", href: "/" },
+  },
+
   seo: {
     titleTemplate: "%s — Oatmeal",
     defaultTitle: "Oatmeal — Customer support that feels like a conversation",
     defaultDescription:
-      "Simplify your shared inbox, collaborate effortlessly, and give every customer a reply that feels personal.",
+      "Simplify your shared inbox, collaborate effortlessly, and give every customer a reply that feels personal — even if it was generated by a bot.",
     defaultImage: "/og.png",
     twitterHandle: "@oatmeal",
     locale: "en_US",

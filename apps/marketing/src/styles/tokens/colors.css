@@ -1,0 +1,79 @@
+/* ============================================================
+   COLORS — Braun / Dieter Rams document palette
+   Warm off-white paper, near-black ink, one restrained orange.
+   Greyscale does the work; the accent is used sparingly.
+
+   Values are kept identical to `@repo/ui` (packages/ui/styles/base.css)
+   so the marketing site and the app share the exact same language.
+   ============================================================ */
+:root {
+  /* --- base neutrals (warm paper stack) --- */
+  --paper: #efebe3; /* page background */
+  --paper-raised: #e8e3d9; /* cards, code chips, raised fills */
+  --paper-deep: #dedad1; /* device/tray fills */
+
+  --ink: #1b1917; /* primary text + strong 2px rules */
+  --ink-soft: #33302b; /* body copy */
+  --muted: #6e6a62; /* secondary text, roles, captions */
+  --faint: #8a857d; /* metadata, placeholders */
+
+  --rule: #d4cec3; /* hairline rules / dividers */
+  --rule-soft: #e1dcd2; /* faint inner dividers */
+
+  --on-ink: #efebe3; /* text/marks on ink surfaces */
+
+  /* --- accent (Braun orange) --- */
+  --accent: #dc4b12;
+  --accent-press: #b23a0c;
+  --accent-tint: rgba(220, 75, 18, 0.15); /* status-dot halo */
+
+  /* ============================================================
+     SEMANTIC ALIASES — prefer these in components
+     ============================================================ */
+  --surface-page: var(--paper);
+  --surface-card: var(--paper-raised);
+  --surface-ink: var(--ink);
+
+  --text-heading: var(--ink);
+  --text-body: var(--ink-soft);
+  --text-muted: var(--muted);
+  --text-meta: var(--faint);
+  --text-on-ink: var(--on-ink);
+
+  --border-hairline: var(--rule);
+  --border-soft: var(--rule-soft);
+  --border-strong: var(--ink);
+
+  --accent-fg: var(--accent);
+  --link: var(--accent);
+  --link-hover: var(--accent-press);
+  --marker: var(--accent); /* the small square / bullet marks */
+}
+
+/* ============================================================
+   DARK THEME — warm charcoal paper, off-white ink, same orange.
+   Only the base neutrals + accent-press are re-pointed; every
+   semantic alias inherits automatically. Apply on any ancestor:
+   <html data-theme="dark"> or <body data-theme="dark">.
+   ============================================================ */
+[data-theme="dark"] {
+  /* warm near-black paper stack (inverse of the light ramp) */
+  --paper: #17140f; /* page background */
+  --paper-raised: #211e18; /* cards, code chips, raised fills */
+  --paper-deep: #2a2620; /* device/tray fills */
+
+  --ink: #efebe3; /* primary text + strong 2px rules */
+  --ink-soft: #d6d1c6; /* body copy */
+  --muted: #9b968c; /* secondary text, roles, captions */
+  --faint: #78736a; /* metadata, placeholders */
+
+  --rule: #37332b; /* hairline rules / dividers */
+  --rule-soft: #26231d; /* faint inner dividers */
+
+  --on-ink: #17140f; /* dark text on the now-light "ink" surface */
+
+  /* accent stays Braun orange; hover LIGHTENS on dark */
+  --accent: #e4571f;
+  --accent-press: #f07038;
+  --accent-tint: rgba(228, 87, 31, 0.18);
+}

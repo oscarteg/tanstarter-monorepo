@@ -1,135 +1,23 @@
 ---
-import AnnouncementBadge from "../components/elements/AnnouncementBadge.astro";
-import ButtonLink from "../components/elements/ButtonLink.astro";
-import Logo from "../components/elements/Logo.astro";
-import LogoGrid from "../components/elements/LogoGrid.astro";
-import Main from "../components/elements/Main.astro";
-import PlainButtonLink from "../components/elements/PlainButtonLink.astro";
-import Screenshot from "../components/elements/Screenshot.astro";
-import ArrowNarrowRightIcon from "../components/icons/ArrowNarrowRightIcon.astro";
-import ChevronIcon from "../components/icons/ChevronIcon.astro";
-import CallToActionSimple from "../components/sections/CallToActionSimple.astro";
-import FaqsTwoColumnAccordion from "../components/sections/FaqsTwoColumnAccordion.astro";
-import FeaturesTwoColumnWithDemos from "../components/sections/FeaturesTwoColumnWithDemos.astro";
-import HeroLeftAlignedWithDemo from "../components/sections/HeroLeftAlignedWithDemo.astro";
-import PricingMultiTier from "../components/sections/PricingMultiTier.astro";
-import StatsWithGraph from "../components/sections/StatsWithGraph.astro";
-import TestimonialsThreeColumnGrid from "../components/sections/TestimonialsThreeColumnGrid.astro";
+import Cta from "../components/sections/Cta.astro";
+import Faq from "../components/sections/Faq.astro";
+import Features from "../components/sections/Features.astro";
+import Hero from "../components/sections/Hero.astro";
+import Logos from "../components/sections/Logos.astro";
+import Pricing from "../components/sections/Pricing.astro";
+import Stats from "../components/sections/Stats.astro";
+import Testimonials from "../components/sections/Testimonials.astro";
 import { home } from "../config/home";
-import { pricing } from "../config/pricing";
-import { faqs, faqsHeadline, logos, statsSection } from "../config/shared";
 import Layout from "../layouts/Layout.astro";
-
-const { hero } = home;
 ---
 
 <Layout description={home.seo.description}>
-  <Main>
-    <HeroLeftAlignedWithDemo id="hero" headline={hero.headline} subheadline={hero.subheadline}>
-      <AnnouncementBadge
-        slot="eyebrow"
-        href={hero.announcement.href}
-        text={hero.announcement.text}
-        cta={hero.announcement.cta}
-      />
-
-      <div slot="cta" class="flex items-center gap-4">
-        <ButtonLink href={hero.primaryCta.href} size="lg">{hero.primaryCta.label}</ButtonLink>
-
-        <PlainButtonLink href={hero.secondaryCta.href} size="lg">
-          {hero.secondaryCta.label} <ArrowNarrowRightIcon />
-        </PlainButtonLink>
-      </div>
-
-      <Fragment slot="demo">
-        <Screenshot class="rounded-md lg:hidden" wallpaper="green" placement="bottom-right">
-          <img
-            src={`${hero.screenshot}?left=1670&top=1408`}
-            alt=""
-            width={1670}
-            height={1408}
-            class="bg-white/75 md:hidden dark:hidden"
-          />
-          <img
-            src={`${hero.screenshot}?left=1670&top=1408&color=olive`}
-            alt=""
-            width={1670}
-            height={1408}
-            class="bg-black/75 not-dark:hidden md:hidden"
-          />
-          <img
-            src={`${hero.screenshot}?left=2000&top=1408`}
-            alt=""
-            width={2000}
-            height={1408}
-            class="bg-white/75 max-md:hidden dark:hidden"
-          />
-          <img
-            src={`${hero.screenshot}?left=2000&top=1408&color=olive`}
-            alt=""
-            width={2000}
-            height={1408}
-            class="bg-black/75 not-dark:hidden max-md:hidden"
-          />
-        </Screenshot>
-        <Screenshot class="rounded-lg max-lg:hidden" wallpaper="green" placement="bottom">
-          <img
-            src={hero.screenshot}
-            alt=""
-            class="bg-white/75 dark:hidden"
-            width={3440}
-            height={1990}
-          />
-          <img
-            src={`${hero.screenshot}?color=olive`}
-            alt=""
-            class="bg-black/75 not-dark:hidden"
-            width={3440}
-            height={1990}
-          />
-        </Screenshot>
-      </Fragment>
-
-      <LogoGrid slot="footer">
-        {logos.map((logo) => <Logo src={logo.src} width={logo.width} height={logo.height} />)}
-      </LogoGrid>
-    </HeroLeftAlignedWithDemo>
-
-    <FeaturesTwoColumnWithDemos
-      id="features"
-      eyebrow={home.features.eyebrow}
-      headline={home.features.headline}
-      subheadline={home.features.subheadline}
-      items={home.features.items}
-    />
-
-    <StatsWithGraph
-      id="stats"
-      eyebrow={statsSection.eyebrow}
-      headline={statsSection.headline}
-      subheadline={statsSection.subheadline}
-      items={statsSection.items}
-    />
-
-    <TestimonialsThreeColumnGrid
-      id="testimonial"
-      headline={home.testimonials.headline}
-      subheadline={home.testimonials.subheadline}
-      items={home.testimonials.items}
-    />
-
-    <FaqsTwoColumnAccordion id="faqs" headline={faqsHeadline} items={faqs} />
-
-    <PricingMultiTier id="pricing" headline={home.pricing.headline} tiers={pricing.tiers} />
-
-    <CallToActionSimple id="call-to-action" headline={home.cta.headline} subheadline={home.cta.subheadline}>
-      <div slot="cta" class="flex items-center gap-4">
-        <ButtonLink href={home.cta.primaryCta.href} size="lg">{home.cta.primaryCta.label}</ButtonLink>
-
-        <PlainButtonLink href={home.cta.secondaryCta.href} size="lg">
-          {home.cta.secondaryCta.label} <ChevronIcon />
-        </PlainButtonLink>
-      </div>
-    </CallToActionSimple>
-  </Main>
+  <Hero />
+  {home.showLogos && <Logos />}
+  <Features />
+  <Stats />
+  <Testimonials />
+  <Faq />
+  <Pricing />
+  <Cta />
 </Layout>

@@ -1,0 +1,121 @@
+---
+import { home } from "../../config/home";
+
+const { testimonials } = home;
+---
+
+<section class="rams-wrap testimonials">
+  <h2 class="block-title">{testimonials.headline}</h2>
+  <p class="block-lead">{testimonials.subheadline}</p>
+
+  <div class="testimonial-grid">
+    {
+      testimonials.items.map((item) => (
+        <figure class="testimonial-card">
+          <blockquote class="quote">{`"${item.quote}"`}</blockquote>
+          <figcaption class="byline">
+            <span class="avatar" aria-hidden="true">
+              {item.initials}
+            </span>
+            <span>
+              <span class="name">{item.name}</span>
+              <span class="role">{item.role}</span>
+            </span>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding-block: 120px 0;
+  }
+
+  .block-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(28px, 3.2vw, 38px);
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .block-lead {
+    font: var(--text-body-lg);
+    color: var(--text-muted);
+    margin: 14px 0 0 0;
+    max-width: 60ch;
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 44px;
+  }
+
+  .testimonial-card {
+    border: 1px solid var(--border-hairline);
+    background: var(--surface-card);
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .quote {
+    font: var(--text-body);
+    color: var(--text-body);
+    margin: 0;
+    flex: 1;
+    text-wrap: pretty;
+  }
+
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    background: var(--surface-page);
+    border: 1px solid var(--accent-fg);
+    color: var(--accent-fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: var(--text-mono-sm);
+    font-weight: 700;
+    border-radius: 2px;
+  }
+
+  .name {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-heading);
+  }
+
+  .role {
+    display: block;
+    font: var(--text-mono-sm);
+    letter-spacing: 0.04em;
+    color: var(--text-meta);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,196 @@
+---
+import { home } from "../../config/home";
+
+const { pricing } = home;
+---
+
+<section id="pricing" class="rams-wrap pricing">
+  <h2 class="pricing-title">{pricing.headline}</h2>
+
+  <div class="tier-grid">
+    {
+      pricing.tiers.map((tier) => (
+        <div class:list={["tier", { popular: tier.popular }]}>
+          <div class="tier-head">
+            <div class="tier-name-row">
+              <span class="tier-name">{tier.name}</span>
+              {tier.popular && <span class="tier-badge">Most popular</span>}
+            </div>
+            <div class="tier-price">
+              <span class="tier-amount">{tier.price}</span>
+              <span class="tier-period">{tier.period}</span>
+            </div>
+            <p class="tier-blurb">{tier.blurb}</p>
+          </div>
+
+          <div class="tier-features">
+            {tier.features.map((feature) => (
+              <div class="tier-feature">
+                <span class="tier-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="tier-feature-text">{feature}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="tier-foot">
+            <a href={tier.cta.href} class="tier-btn">
+              {tier.cta.label}
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .pricing {
+    padding-block: 120px 0;
+  }
+
+  .pricing-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(28px, 3.2vw, 38px);
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    margin: 0 0 44px 0;
+  }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .tier {
+    border: 1px solid var(--border-hairline);
+    background: var(--surface-card);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .tier.popular {
+    border: 2px solid var(--border-strong);
+  }
+
+  .tier-head {
+    padding: 26px 26px 22px 26px;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .tier-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tier-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--text-heading);
+  }
+
+  .tier-badge {
+    font: var(--text-mono-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--accent-tint);
+    color: var(--accent-fg);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .tier-price {
+    margin-top: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .tier-amount {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+  }
+
+  .tier-period {
+    font: var(--text-mono);
+    color: var(--text-meta);
+  }
+
+  .tier-blurb {
+    font: var(--text-small);
+    color: var(--text-muted);
+    margin: 14px 0 0 0;
+    max-width: 34ch;
+  }
+
+  .tier-features {
+    padding: 22px 26px;
+    flex: 1;
+  }
+
+  .tier-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .tier-check {
+    flex: 0 0 auto;
+    color: var(--accent-fg);
+    margin-top: 1px;
+    display: flex;
+  }
+
+  .tier-feature-text {
+    font: var(--text-small);
+    color: var(--text-body);
+  }
+
+  .tier-foot {
+    padding: 0 26px 26px 26px;
+  }
+
+  .tier-btn {
+    display: block;
+    text-align: center;
+    font: var(--text-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--text-heading);
+    border: 1px solid var(--border-strong);
+    padding: 13px 18px;
+    border-radius: 2px;
+  }
+
+  .popular .tier-btn {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+
+  .tier-btn:hover {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+
+  @media (max-width: 860px) {
+    .tier-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
