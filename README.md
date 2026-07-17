@@ -91,6 +91,15 @@ The [vite config](./apps/web/vite.config.ts#L48-L53) is configured to use Nitro 
 
 Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/docs/framework/react/guide/hosting) for more information.
 
+### Docker (SSR container)
+
+This template deploys as a container running the Nitro **Node SSR** server (not a static host). CI builds and publishes the image to the GitHub Container Registry (`ghcr.io`) on every push to `main`.
+
+- The multi-stage `Dockerfile` installs the workspace, runs `pnpm build:web`, and ships a slim runtime that serves `.output/server/index.mjs` as a non-root user on port 3000.
+- **`docker compose up`** starts Postgres, runs migrations once (the `migrate` one-shot service), then starts the app at http://localhost:3000.
+- **Migrations** run via `pnpm --filter @repo/db db migrate` (Drizzle). Compose runs this before `web` starts; run it against any environment by setting `DATABASE_URL` and invoking the same command.
+- Configure the app with `DATABASE_URL`, `VITE_BASE_URL`, and `BETTER_AUTH_SECRET` (plus optional OAuth client IDs/secrets). Never bake secrets into the image.
+
 ### Build caching
 
 Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run build` as the build command.

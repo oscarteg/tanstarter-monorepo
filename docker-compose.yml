@@ -9,6 +9,41 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=tanstarter
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tanstarter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-shot: apply Drizzle migrations, then exit. Uses the build stage (which
+  # has drizzle-kit + the workspace); the web image itself stays slim.
+  migrate:
+    build:
+      context: .
+      target: build
+    command: pnpm --filter @repo/db db migrate
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/tanstarter
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # The SSR app, served from the self-contained Nitro output.
+  web:
+    build:
+      context: .
+      target: runner
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/tanstarter
+      - VITE_BASE_URL=http://localhost:3000
+      - BETTER_AUTH_SECRET=dev-secret-change-me
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data_tanstarter:

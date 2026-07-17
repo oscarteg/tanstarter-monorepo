@@ -1,9 +1,14 @@
+import { existsSync } from "node:fs";
 import { loadEnvFile } from "node:process";
 
 import type { Config } from "drizzle-kit";
 
-// Load .env from /apps/web
-loadEnvFile("../../apps/web/.env");
+// Load .env from /apps/web for local dev. In containers/CI the vars come from
+// the environment, so only load the file when it actually exists.
+const localEnv = "../../apps/web/.env";
+if (existsSync(localEnv)) {
+  loadEnvFile(localEnv);
+}
 
 export default {
   out: "./migrations",

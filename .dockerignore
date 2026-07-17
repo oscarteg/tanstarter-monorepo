@@ -1,0 +1,26 @@
+# Dependencies and build artifacts — reinstalled/rebuilt inside the image.
+**/node_modules
+**/.output
+**/dist
+**/.nitro
+**/.tanstack
+**/.vite
+**/.astro
+**/*.tsbuildinfo
+
+# VCS and local tooling.
+.git
+.jj
+.vite-hooks
+.vscode
+
+# Secrets and local env — provided at runtime, never baked into the image.
+**/.env
+**/.env.*
+!**/.env.example
+
+# Misc
+**/*.log
+.DS_Store
+Dockerfile
+.dockerignore
