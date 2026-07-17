@@ -100,6 +100,10 @@ This template deploys as a container running the Nitro **Node SSR** server (not 
 - **Migrations** run via `pnpm --filter @repo/db db migrate` (Drizzle). Compose runs this before `web` starts; run it against any environment by setting `DATABASE_URL` and invoking the same command.
 - Configure the app with `DATABASE_URL`, `VITE_BASE_URL`, and `BETTER_AUTH_SECRET` (plus optional OAuth client IDs/secrets). Never bake secrets into the image.
 
+### Continuous integration
+
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs on every pull request and push to `main`: format check, lint + typecheck, tests, and build (with a Postgres service for DB-touching tests). On `main`, a second job builds the Docker image and publishes it to `ghcr.io/<owner>/<repo>` (`latest` + `sha-` tags). It authenticates with the built-in `GITHUB_TOKEN` — no extra secrets — and only needs the repository's Actions permission to write packages (granted per-job via `packages: write`).
+
 ### Build caching
 
 Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run build` as the build command.
