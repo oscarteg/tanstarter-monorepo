@@ -29,7 +29,8 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "sonner": "catalog:",
-    "valibot": "catalog:"
+    "valibot": "catalog:",
+    "zustand": "catalog:"
   },
   "devDependencies": {
     "@babel/core": "catalog:",

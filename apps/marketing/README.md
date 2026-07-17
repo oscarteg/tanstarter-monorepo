@@ -29,16 +29,16 @@ tokens — there is no React and no inline-style objects.
 Everything you need to change lives in `src/config/` and `src/content/`. You
 should not have to touch component markup to launch a new brand.
 
-| What                                              | Where                     |
-| ------------------------------------------------- | ------------------------- |
-| Brand name, nav, footer links, socials            | `src/config/site.ts`      |
-| Newsletter copy, fineprint, 404 copy              | `src/config/site.ts`      |
-| SEO defaults: title template, description, OG      | `src/config/site.ts`      |
-| Announcement, hero, logos, features               | `src/config/home.ts`      |
-| Stats, testimonials, FAQs                         | `src/config/home.ts`      |
-| Pricing tiers                                     | `src/config/home.ts`      |
-| Final CTA                                         | `src/config/home.ts`      |
-| Privacy prose                                     | `src/content/pages/*.mdx` |
+| What                                          | Where                     |
+| --------------------------------------------- | ------------------------- |
+| Brand name, nav, footer links, socials        | `src/config/site.ts`      |
+| Newsletter copy, fineprint, 404 copy          | `src/config/site.ts`      |
+| SEO defaults: title template, description, OG | `src/config/site.ts`      |
+| Announcement, hero, logos, features           | `src/config/home.ts`      |
+| Stats, testimonials, FAQs                     | `src/config/home.ts`      |
+| Pricing tiers                                 | `src/config/home.ts`      |
+| Final CTA                                     | `src/config/home.ts`      |
+| Privacy prose                                 | `src/content/pages/*.mdx` |
 
 Each config module is typed, so a missing or misspelled field is a build error
 rather than a blank section.

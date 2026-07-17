@@ -16,6 +16,7 @@ import { Fragment } from "react";
 
 import { AppSidebar } from "#/components/app-sidebar";
 import { ThemeToggle } from "#/components/theme-toggle";
+import { useUiStore } from "#/stores/ui-store";
 
 export const Route = createFileRoute("/_auth/app")({
   component: AppLayout,
@@ -32,6 +33,7 @@ function humanize(segment: string) {
 function AppLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const segments = pathname.split("/").filter(Boolean);
+  const setCommandOpen = useUiStore((state) => state.setCommandOpen);
 
   return (
     <TooltipProvider delay={0}>
@@ -71,6 +73,8 @@ function AppLayout() {
                   placeholder="Search..."
                   className="h-8 w-48 pl-8"
                   aria-label="Search"
+                  readOnly
+                  onClick={() => setCommandOpen(true)}
                 />
               </div>
               <ThemeToggle />
