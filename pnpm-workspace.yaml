@@ -4,6 +4,7 @@ packages:
   - tooling/*
 allowBuilds:
   esbuild: true
+  msw: true
 
 # https://pnpm.io/settings#minimumreleaseage
 # https://pnpm.io/supply-chain-security#delay-dependency-updates
@@ -47,6 +48,7 @@ catalog:
   drizzle-orm: 1.0.0-rc.4
   lucide-react: 1.24.0
   motion: 12.42.2
+  msw: 2.15.0
   nanoid: 6.0.0
   nitro: 3.0.260610-beta
   postgres: 3.4.9

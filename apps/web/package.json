@@ -50,6 +50,7 @@
     "@vitejs/plugin-react": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
     "cross-env": "catalog:",
+    "msw": "catalog:",
     "nitro": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
