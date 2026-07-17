@@ -1,4 +1,6 @@
 import { useAuthSuspense } from "@repo/auth/tanstack/hooks";
+import { Pipeline } from "@repo/ui/components/rams-content";
+import { Kicker, ListRow, SectionHeader, StatusBadge } from "@repo/ui/components/rams-core";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/app/")({
@@ -7,27 +9,46 @@ export const Route = createFileRoute("/_auth/app/")({
 
 function AppIndex() {
   const { user } = useAuthSuspense();
-  // We can also use Route.useRouteContext() which uses loader/beforeLoad data from parent layouts.
-  // But useAuth() or useAuthSuspense() is preferred for direct TanStack Query revalidation,
-  // since beforeLoad only re-runs on navigation.
 
   return (
-    <div className="flex flex-col items-center gap-3 text-center text-sm">
-      <pre className="mb-1 rounded-md border bg-card p-1 text-xs text-card-foreground">
-        _auth/app/index.tsx
-      </pre>
-
-      <div>
-        User from route context:
-        <span className="mt-0.5 block font-mono text-xs">{user?.name}</span>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-10">
+      <div className="flex flex-col gap-2">
+        <Kicker>Dashboard</Kicker>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          Hi there{user?.name ? `, ${user.name}` : ""}.
+        </h1>
+        <StatusBadge label="All systems operational" />
       </div>
 
-      <div>
-        <p>The /app index page, a protected route, since it is under the _auth layout:</p>
-        <pre className="mx-auto mt-0.5 block w-fit rounded-md border bg-card p-1 text-xs text-card-foreground">
-          _auth/route.tsx
-        </pre>
-      </div>
+      <section>
+        <SectionHeader number="01" label="Getting started" action={{ label: "Docs ↗", href: "#" }} />
+        <Pipeline steps={["Clone", "Configure", "Add a module", "Ship"]} activeIndex={2} />
+      </section>
+
+      <section>
+        <SectionHeader number="02" label="Recent activity" />
+        <div className="flex flex-col">
+          <ListRow
+            left="Today"
+            title="Rams design system applied"
+            subtitle="@repo/ui retheme — paper, ink, one orange"
+            meta="CRT-264"
+          />
+          <ListRow
+            left="Today"
+            title="Module system added"
+            subtitle="Route + nav injection, one toggle"
+            meta="CRT-265"
+          />
+          <ListRow
+            left="Today"
+            title="Rams components ported"
+            subtitle="SectionHeader, ListRow, Pipeline…"
+            meta="CRT-267"
+            lastBorder
+          />
+        </div>
+      </section>
     </div>
   );
 }
