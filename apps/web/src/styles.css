@@ -1,9 +1,13 @@
 @import "@repo/ui/styles/base.css";
 @source "./";
 
-@import "@fontsource-variable/inter";
+/* Rams Document type: Archivo (grotesk) for structure, Space Mono for labels/numbers. */
+@import "@fontsource-variable/archivo";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
 @theme inline {
   --font-heading: var(--font-sans);
-  --font-sans: "Inter Variable", sans-serif;
+  --font-sans: "Archivo Variable", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "SFMono-Regular", monospace;
 }

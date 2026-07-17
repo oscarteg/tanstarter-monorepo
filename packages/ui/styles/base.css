@@ -49,72 +49,104 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* shadcn contract — remapped to Rams Document tokens (light "paper") */
+  --background: #efebe3; /* paper */
+  --foreground: #1b1917; /* ink */
+  --card: #e8e3d9; /* raised paper */
+  --card-foreground: #1b1917;
+  --popover: #e8e3d9;
+  --popover-foreground: #1b1917;
+  --primary: #dc4b12; /* Braun orange */
+  --primary-foreground: #efebe3; /* on-ink */
+  --secondary: #e8e3d9;
+  --secondary-foreground: #1b1917;
+  --muted: #e8e3d9;
+  --muted-foreground: #6e6a62;
+  --accent: #dedad1; /* paper-deep — subtle hover surface */
+  --accent-foreground: #1b1917;
+  --destructive: #a3341f; /* functional red, kept distinct from the orange accent */
+  --border: #d4cec3; /* hairline rule */
+  --input: #d4cec3;
+  --ring: #dc4b12;
+  --chart-1: #dc4b12;
+  --chart-2: #33302b;
+  --chart-3: #6e6a62;
+  --chart-4: #8a857d;
+  --chart-5: #b23a0c;
+  --radius: 0px; /* square corners — the Rams signature */
+  --sidebar: #e8e3d9;
+  --sidebar-foreground: #1b1917;
+  --sidebar-primary: #dc4b12;
+  --sidebar-primary-foreground: #efebe3;
+  --sidebar-accent: #dedad1;
+  --sidebar-accent-foreground: #1b1917;
+  --sidebar-border: #d4cec3;
+  --sidebar-ring: #dc4b12;
+
+  /* Rams-native tokens (additive; consumed by the ported Rams components) */
+  --paper: #efebe3;
+  --paper-raised: #e8e3d9;
+  --paper-deep: #dedad1;
+  --ink: #1b1917;
+  --ink-soft: #33302b;
+  --ink-muted: #6e6a62;
+  --faint: #8a857d;
+  --rule: #d4cec3;
+  --rule-soft: #e1dcd2;
+  --on-ink: #efebe3;
+  --accent-press: #b23a0c;
+  --accent-tint: rgba(220, 75, 18, 0.15);
+  --marker: #dc4b12;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* shadcn contract — remapped to Rams dark ("warm charcoal paper") */
+  --background: #17140f;
+  --foreground: #efebe3;
+  --card: #211e18;
+  --card-foreground: #efebe3;
+  --popover: #211e18;
+  --popover-foreground: #efebe3;
+  --primary: #e4571f;
+  --primary-foreground: #17140f;
+  --secondary: #211e18;
+  --secondary-foreground: #efebe3;
+  --muted: #211e18;
+  --muted-foreground: #9b968c;
+  --accent: #2a2620;
+  --accent-foreground: #efebe3;
+  --destructive: #e5674d;
+  --border: #37332b;
+  --input: #37332b;
+  --ring: #e4571f;
+  --chart-1: #e4571f;
+  --chart-2: #d6d1c6;
+  --chart-3: #9b968c;
+  --chart-4: #78736a;
+  --chart-5: #f07038;
+  --sidebar: #211e18;
+  --sidebar-foreground: #efebe3;
+  --sidebar-primary: #e4571f;
+  --sidebar-primary-foreground: #17140f;
+  --sidebar-accent: #2a2620;
+  --sidebar-accent-foreground: #efebe3;
+  --sidebar-border: #37332b;
+  --sidebar-ring: #e4571f;
+
+  /* Rams-native tokens (dark) */
+  --paper: #17140f;
+  --paper-raised: #211e18;
+  --paper-deep: #2a2620;
+  --ink: #efebe3;
+  --ink-soft: #d6d1c6;
+  --ink-muted: #9b968c;
+  --faint: #78736a;
+  --rule: #37332b;
+  --rule-soft: #26231d;
+  --on-ink: #17140f;
+  --accent-press: #f07038;
+  --accent-tint: rgba(228, 87, 31, 0.18);
+  --marker: #e4571f;
 }
 
 @layer base {
