@@ -52,6 +52,7 @@ import {
 import { useState } from "react";
 
 import { navigation } from "#/config/navigation";
+import { enabledModules } from "#/modules/registry";
 
 /**
  * The application shell sidebar (shadcn `sidebar-07`), driven entirely by
@@ -66,6 +67,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
+        <NavModules />
         <NavProjects />
       </SidebarContent>
       <SidebarFooter>
@@ -178,6 +180,35 @@ function NavMain() {
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
+          );
+        })}
+      </SidebarMenu>
+    </SidebarGroup>
+  );
+}
+
+function NavModules() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const items = enabledModules.flatMap((module) => module.nav ?? []);
+
+  if (items.length === 0) return null;
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Modules</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <SidebarMenuItem key={item.url}>
+              <SidebarMenuButton
+                render={<a href={item.url} aria-label={item.title} />}
+                isActive={item.url === pathname}
+              >
+                <Icon />
+                <span>{item.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           );
         })}
       </SidebarMenu>
