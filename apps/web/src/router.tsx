@@ -4,6 +4,12 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 
 import { DefaultCatchBoundary } from "#/components/default-catch-boundary";
 import { DefaultNotFound } from "#/components/default-not-found";
+import { initSentry } from "#/lib/sentry";
+
+// Client-only: enabled when VITE_SENTRY_DSN is set, otherwise a no-op.
+if (typeof document !== "undefined") {
+  initSentry(import.meta.env.VITE_SENTRY_DSN, import.meta.env.MODE);
+}
 import { enabledModules } from "#/modules/registry";
 
 import { Route as rootRoute } from "./routes/__root";

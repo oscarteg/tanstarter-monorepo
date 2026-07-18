@@ -19,6 +19,7 @@ catalog:
   "@fontsource/space-mono": 5.2.9
   "@icons-pack/react-simple-icons": 13.13.0
   "@rolldown/plugin-babel": 0.2.3
+  "@sentry/react": 10.66.0
   "@tailwindcss/vite": 4.3.3
   "@tanstack/devtools-a11y": 0.1.6
   "@tanstack/devtools-vite": 0.8.1

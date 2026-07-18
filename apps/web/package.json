@@ -16,6 +16,7 @@
     "@repo/db": "workspace:*",
     "@repo/notes": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@sentry/react": "catalog:",
     "@tanstack/react-form": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-router": "catalog:",
