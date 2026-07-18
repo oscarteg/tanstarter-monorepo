@@ -386,6 +386,9 @@ importers:
       postgres:
         specifier: 'catalog:'
         version: 3.4.9
+      valibot:
+        specifier: 'catalog:'
+        version: 1.4.2(typescript@7.0.2)
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*

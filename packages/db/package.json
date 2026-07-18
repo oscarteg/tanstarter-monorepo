@@ -14,7 +14,8 @@
   "dependencies": {
     "drizzle-orm": "catalog:",
     "nanoid": "catalog:",
-    "postgres": "catalog:"
+    "postgres": "catalog:",
+    "valibot": "catalog:"
   },
   "devDependencies": {
     "@repo/tsconfig": "workspace:*",

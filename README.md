@@ -57,7 +57,14 @@ pnpm create mugnavo -t monorepo
    pnpm create mugnavo -t monorepo
    ```
 
-2. Create a `.env` file in `/apps/web` based on [`.env.example`](./apps/web/.env.example).
+2. Set up the environment: copy [`apps/web/.env.example`](./apps/web/.env.example) to `apps/web/.env` and fill it in.
+
+   - `DATABASE_URL` — Postgres connection string (or run `docker compose up -d` to start the bundled Postgres).
+   - `BETTER_AUTH_SECRET` — generate one with `vpr auth:secret`.
+   - `VITE_BASE_URL` — the app's base URL (defaults to `http://localhost:3000`).
+   - OAuth client IDs/secrets are optional.
+
+   The server environment is validated on boot (Valibot), so a missing or malformed `DATABASE_URL` fails fast with a clear message instead of a cryptic runtime error.
 
 3. Generate the initial migration with drizzle-kit, then apply to your database:
 
