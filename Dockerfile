@@ -16,7 +16,13 @@ FROM base AS build
 # Copy the monorepo (exclusions in .dockerignore) and install with the frozen
 # lockfile so the image matches the committed dependency graph.
 COPY . .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+# `--ignore-scripts` skips the repo's `prepare` (it runs `vp config`, a
+# dev-machine git-hooks step needing a .git dir we deliberately don't ship).
+# `pnpm rebuild` then runs the *dependency* build scripts (esbuild et al.)
+# that the build actually needs.
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --ignore-scripts \
+    && pnpm rebuild
 # Produces apps/web/.output (Nitro bundles its own runtime dependencies).
 RUN pnpm build:web
 
