@@ -12,6 +12,7 @@
     "format": "vp fmt",
     "format:check": "vp fmt --check",
     "test": "vp test",
+    "test:e2e": "playwright test",
     "check": "vp check",
     "check:fix": "vp check --fix",
     "prepare": "vp config",
@@ -27,6 +28,7 @@
     "intent": "vpx @tanstack/intent@latest"
   },
   "devDependencies": {
+    "@playwright/test": "catalog:",
     "@tanstack/eslint-plugin-query": "catalog:",
     "@tanstack/eslint-plugin-router": "catalog:",
     "vite-plus": "catalog:"

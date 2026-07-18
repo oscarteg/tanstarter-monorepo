@@ -35,3 +35,8 @@ yarn-error.log*
 .tanstack
 worker-configuration.d.ts
 .fallow/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
