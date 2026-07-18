@@ -8,6 +8,11 @@
 FROM node:24-slim AS base
 ENV PNPM_HOME="/pnpm" \
     PATH="/pnpm:$PATH"
+# Vite+ is a Rust binary that initialises an HTTP client on startup and panics
+# without system CA certificates, which node:*-slim does not ship.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 RUN corepack enable
 WORKDIR /app
 
@@ -29,8 +34,12 @@ FROM node:24-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     PORT=3000
-# Run as a non-root user.
-RUN addgroup --system --gid 1001 nodejs \
+# CA certificates for outbound TLS (OAuth providers, database, external APIs),
+# plus the non-root user the server runs as.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates \
+ && rm -rf /var/lib/apt/lists/* \
+ && addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 --ingroup nodejs nodejs
 # Nitro output is self-contained, so the runtime needs nothing but .output.
 COPY --from=build --chown=nodejs:nodejs /app/apps/web/.output ./.output
