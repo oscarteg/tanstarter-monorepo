@@ -47,6 +47,11 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # Astro's generated types (astro:content) live in the gitignored .astro/
+      # directory, so a fresh clone has none — generate them before typecheck.
+      - name: Generate Astro types
+        run: pnpm --filter @repo/marketing sync
+
       - name: Format check
         run: pnpm run format:check
 
