@@ -4,11 +4,13 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 
 import { DefaultCatchBoundary } from "#/components/default-catch-boundary";
 import { DefaultNotFound } from "#/components/default-not-found";
+import { initPostHog } from "#/lib/posthog";
 import { initSentry } from "#/lib/sentry";
 
-// Client-only: enabled when VITE_SENTRY_DSN is set, otherwise a no-op.
+// Client-only observability: each is a no-op unless its env var is set.
 if (typeof document !== "undefined") {
   initSentry(import.meta.env.VITE_SENTRY_DSN, import.meta.env.MODE);
+  initPostHog(import.meta.env.VITE_POSTHOG_KEY, import.meta.env.VITE_POSTHOG_HOST);
 }
 import { enabledModules } from "#/modules/registry";
 
