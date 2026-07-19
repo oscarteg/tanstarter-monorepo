@@ -15,31 +15,42 @@ pnpm create mugnavo -t monorepo
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) + [Base UI](https://base-ui.com/) (base-rhea, [`--preset b1au68YWO`](https://ui.shadcn.com/create?preset=b1au68YWO&base=base&template=start&pointer=true))
 - [Drizzle ORM v1](https://orm.drizzle.team/docs/relations-v1-v2) + PostgreSQL
 - [Better Auth](https://better-auth.com/)
+- [Astro](https://astro.build/) for the static marketing site
+- [Vitest](https://vitest.dev/) + [MSW](https://mswjs.io/) + [Playwright](https://playwright.dev/)
 
 ```sh
 ├── apps
-│    ├── web                    # TanStack Start web app
+│    ├── web                    # TanStack Start app (Nitro Node SSR)
+│    └── marketing              # Astro marketing site (static)
 ├── packages
-│    ├── auth                   # Better Auth
+│    ├── auth                   # Better Auth + TanStack integration
 │    ├── db                     # Drizzle ORM + Drizzle Kit + PostgreSQL
-│    └── ui                     # shadcn/ui primitives & utils
+│    ├── notes                  # Example feature module — copy it or delete it
+│    └── ui                     # shadcn/ui primitives, Rams components, theme
 ├── tooling
 │    └── tsconfig               # Shared TypeScript configuration
-├── vite.config.ts
-├── LICENSE
-└── README.md
+├── e2e                         # Playwright end-to-end tests
+├── docs                        # Documentation (start here ↓)
+├── .agents                     # Conventions for AI agents
+├── docker-compose.yml
+├── Dockerfile
+└── vite.config.ts
 ```
 
-## Table of Contents
+## Documentation
 
-- [Getting Started](#getting-started)
-- [Deploying to production](#deploying-to-production)
-- [Issue watchlist](#issue-watchlist)
-- [Goodies](#goodies)
-  - [Git hooks](#git-hooks)
-  - [Scripts](#scripts)
-  - [Utilities](#utilities)
-- [Ecosystem](#ecosystem)
+| Guide                                              | What's in it                                                                  |
+| -------------------------------------------------- | ----------------------------------------------------------------------------- |
+| [Architecture](./docs/architecture.md)             | How the pieces fit: packages, the database entry point, auth flow, data flow. |
+| [Feature modules](./docs/modules.md)               | The module pattern — building one, enabling it, removing the example.         |
+| [Development](./docs/development.md)               | Commands, environment, database, checks, testing, dependencies.               |
+| [Deployment](./docs/deployment.md)                 | Docker, Compose, migrations, CI, other hosting targets.                       |
+| [Starting a project](./docs/starting-a-project.md) | Turning the template into a real application.                                 |
+
+Package-level detail lives next to the code: [`apps/web`](./apps/web/README.md),
+[`apps/marketing`](./apps/marketing/README.md), [`packages/auth`](./packages/auth/README.md),
+[`packages/db`](./packages/db/README.md), [`packages/email`](./packages/email/README.md),
+[`packages/ui`](./packages/ui/README.md), [`packages/notes`](./packages/notes/README.md).
 
 ## Getting Started
 
@@ -48,32 +59,31 @@ pnpm create mugnavo -t monorepo
 - [Node.js](https://nodejs.org/en/download) >= 24
 - [pnpm](https://pnpm.io/installation) >= 11
 - [Vite Plus](https://viteplus.dev/guide/#install-vp) (`vp`)
+- Docker, for the local Postgres
 
 #### Setup
 
-1. [Use this template](https://github.com/new?template_name=tanstarter-monorepo&template_owner=mugnavo) or create a project using our CLI:
+1. [Use this template](https://github.com/new?template_name=tanstarter-monorepo&template_owner=mugnavo) or create a project with the CLI:
 
    ```
    pnpm create mugnavo -t monorepo
    ```
 
-2. Set up the environment: copy [`apps/web/.env.example`](./apps/web/.env.example) to `apps/web/.env` and fill it in.
+2. Copy [`apps/web/.env.example`](./apps/web/.env.example) to `apps/web/.env` and fill it in.
 
-   - `DATABASE_URL` — Postgres connection string (or run `docker compose up -d` to start the bundled Postgres).
+   - `DATABASE_URL` — Postgres connection string (or run `docker compose up -d` for the bundled Postgres).
    - `BETTER_AUTH_SECRET` — generate one with `vpr auth:secret`.
-   - `VITE_BASE_URL` — the app's base URL (defaults to `http://localhost:3000`).
-   - OAuth client IDs/secrets are optional.
+   - `VITE_BASE_URL` — the app's base URL (`http://localhost:3000` in development).
+   - SSO, Sentry, and PostHog keys are optional and stay off while blank.
 
-   The server environment is validated on boot (Valibot), so a missing or malformed `DATABASE_URL` fails fast with a clear message instead of a cryptic runtime error.
+   `DATABASE_URL` is validated on boot (Valibot), so a missing or malformed value fails fast with a clear message instead of a cryptic runtime error. Full table in [development.md](./docs/development.md#environment).
 
-3. Generate the initial migration with drizzle-kit, then apply to your database:
+3. Generate and apply the initial migration:
 
    ```sh
    vpr db generate
    vpr db migrate
    ```
-
-   https://orm.drizzle.team/docs/migrations
 
 4. Run the development server:
 
@@ -81,60 +91,24 @@ pnpm create mugnavo -t monorepo
    vpr dev
    ```
 
-   The development server should now be running at [http://localhost:3000](http://localhost:3000).
+   The app comes up at [http://localhost:3000](http://localhost:3000).
 
 > [!TIP]
-> If you want to run a local Postgres instance via Docker Compose with the dev server, you can use the [dev.sh](./dev.sh) script:
->
-> ```sh
-> ./dev.sh # runs "vp run --recursive --parallel dev"
-> # or
-> ./dev.sh web # runs "vp run --filter=@repo/web dev"
-> ```
+> [`./dev.sh`](./dev.sh) brings up Postgres and the dev server together — `./dev.sh` for every workspace, `./dev.sh web` for the app alone.
+
+`vpr check` (format + lint + typecheck) is the one command to run before pushing.
+Note that `jj` doesn't run git hooks, so the staged-file formatter never fires on
+`jj commit` — CI is the backstop, not the first line of defence.
 
 ## Deploying to production
 
-The [vite config](./apps/web/vite.config.ts#L48-L53) is configured to use Nitro by default, which supports many [deployment presets](https://nitro.build/deploy) like Netlify, Vercel, Node.js, and more.
+The app ships as a container running the Nitro **Node SSR** server; CI publishes
+a multi-arch image to `ghcr.io` on every push to `main`. Nitro also has
+[presets](https://nitro.build/deploy) for Netlify, Vercel, Node, and more if
+you'd rather not use a container.
 
-Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/docs/framework/react/guide/hosting) for more information.
-
-### Docker (SSR container)
-
-This template deploys as a container running the Nitro **Node SSR** server (not a static host). CI builds and publishes the image to the GitHub Container Registry (`ghcr.io`) on every push to `main`.
-
-- The multi-stage `Dockerfile` installs the workspace, runs `pnpm build:web`, and ships a slim runtime that serves `.output/server/index.mjs` as a non-root user on port 3000.
-- **`docker compose up -d`** starts only Postgres — what local development and the E2E suite need.
-- **`docker compose --profile full up`** additionally runs migrations once (the `migrate` one-shot service) and serves the containerised app at http://localhost:3000. It builds the image, so it's opt-in.
-- **Migrations** run via `pnpm --filter @repo/db db migrate` (Drizzle). The `full` profile runs this before `web` starts; run it against any environment by setting `DATABASE_URL` and invoking the same command.
-- Configure the app with `DATABASE_URL`, `VITE_BASE_URL`, and `BETTER_AUTH_SECRET` (plus optional Authelia SSO credentials). Never bake secrets into the image.
-
-### Continuous integration
-
-[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs on every pull request and push to `main`: format check, lint + typecheck, tests, and build. On `main`, a second job builds the Docker image (amd64 + arm64) and publishes it to `ghcr.io/<owner>/<repo>` (`latest` + `sha-` tags). It authenticates with the built-in `GITHUB_TOKEN` — no extra secrets — and only needs the repository's Actions permission to write packages (granted per-job via `packages: write`).
-
-Note that `jj` does not run git hooks, so the staged-file formatter never fires on `jj commit`. Run `vp check` (format + lint + typecheck) before pushing; CI is the backstop.
-
-### End-to-end tests
-
-[`.github/workflows/e2e.yml`](./.github/workflows/e2e.yml) runs [Playwright](https://playwright.dev) on every pull request and push to `main`. Nothing has to be deployed first: `webServer` in [`playwright.config.ts`](./playwright.config.ts) builds and serves both apps itself.
-
-- **`marketing`** — runs against a preview of the static build.
-- **`app`** — runs against the real SSR server (the same Nitro output the Docker image runs), so it needs Postgres with migrations applied.
-
-Locally:
-
-```bash
-docker compose up -d db
-pnpm db migrate
-pnpm exec playwright install chromium   # first run only
-pnpm test:e2e
-```
-
-`DATABASE_URL` defaults to the compose database; export it to point somewhere else.
-
-### Build caching
-
-Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run build` as the build command.
+See [deployment.md](./docs/deployment.md) for the image, Compose profiles,
+migrations, and CI.
 
 ## Issue watchlist
 
@@ -153,17 +127,20 @@ Dependency versions are pinned, so they may be slightly outdated when you create
 
 #### Scripts
 
-Check the root [package.json](./package.json) and each workspace package's `package.json` for the full list of available scripts.
+Check the root [package.json](./package.json) and each workspace package's `package.json` for the full list.
 
-- **`auth:generate`** - Regenerate the [auth db schema](./packages/db/src/schema/auth.schema.ts) if you've made changes to your Better Auth [config](./packages/auth/src/auth.ts).
+- **`check`** - Format, lint, and typecheck. Run this before pushing. (`check:fix` to fix.)
+- **`test`**, **`test:e2e`** - Vitest and Playwright.
+- **`db`** - Drizzle Kit. (e.g. `vpr db generate`)
+- **`auth:generate`** - Regenerate the [auth db schema](./packages/db/src/schema/auth.schema.ts) after changing the Better Auth [config](./packages/auth/src/auth.ts).
 - **`ui`** - The shadcn/ui CLI. (e.g. `vpr ui add button`)
-- **`format`**, **`lint`** - Run Oxfmt and Oxlint, or both via `vpr check`.
-- **`deps`** - Selectively upgrade dependencies via taze.
+- **`deps`**, **`fallow`** - Upgrade dependencies via taze; find unused ones.
 
 #### Utilities
 
-- [`/auth/src/tanstack/middleware.ts`](./packages/auth/src/tanstack/middleware.ts) - Sample middleware for enforcing authentication on server functions & API routes.
-- [`/web/src/components/theme-toggle.tsx`](./apps/web/src/components/theme-toggle.tsx), [`/ui/lib/theme-provider.tsx`](./packages/ui/lib/theme-provider.tsx) - A theme toggle and provider for toggling between light and dark mode.
+- [`/auth/src/tanstack/middleware.ts`](./packages/auth/src/tanstack/middleware.ts) - Middleware for enforcing authentication on server functions & API routes.
+- [`/web/src/components/theme-toggle.tsx`](./apps/web/src/components/theme-toggle.tsx), [`/ui/lib/theme-provider.tsx`](./packages/ui/lib/theme-provider.tsx) - A theme toggle and provider for light/dark mode.
+- [`/web/src/modules/`](./apps/web/src/modules/) - The feature-module registry.
 
 ## License
 

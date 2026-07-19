@@ -1,62 +1,50 @@
-# @repo/db — the single database entry point
+# @repo/db
 
-Every package in this monorepo reaches the database through `@repo/db`. There is
-exactly **one** connection and **one** client.
+The Drizzle client, the schema, and environment validation. **The single
+database entry point** — nothing else in the repo constructs a connection.
 
 ## Exports
 
-- `@repo/db` → the `db` client (Drizzle over a single `postgres` connection).
-  This is the only place a connection is opened.
-- `@repo/db/schema` → the core / shared schema (Better Auth tables, etc.).
+```ts
+import { db } from "@repo/db"; // the client
+import { user } from "@repo/db/schema"; // tables and relations
+```
 
-## Rule: one connection
+`src/index.ts` is marked `"@tanstack/react-start/server-only"`, so importing the
+client from browser code fails the build instead of leaking a connection string.
 
-Never call `postgres()` / `drizzle()` anywhere else. Modules and apps import `db`
-from `@repo/db` and run queries against their own table objects.
+## Environment
 
-## Per-module data access
+`parseDbEnv` (`src/env.ts`) validates `DATABASE_URL` with Valibot before the
+client is built: it must be present and start with `postgres`. A bad value fails
+at boot with a message pointing at `.env.example`, rather than surfacing as a
+connection error mid-request.
 
-A feature module (a package under `packages/`) owns its data:
+It takes its source as an argument rather than reading `process.env` itself,
+which is what makes it testable; the live call in `index.ts` passes
+`process.env`.
 
-- `packages/<module>/src/schema.ts` — the module's Drizzle tables. User-owned
-  rows reference the core user table:
+## Schema
 
-  ```ts
-  import { user } from "@repo/db/schema";
-  import { nanoid } from "nanoid";
-  import { pgTable, text } from "drizzle-orm/pg-core";
+| File                        | What it is                                                  |
+| --------------------------- | ----------------------------------------------------------- |
+| `src/schema/auth.schema.ts` | **Generated** from the Better Auth config. Don't hand-edit. |
+| `src/schema/relations.ts`   | The main relations.                                         |
+| `src/schema/index.ts`       | The barrel.                                                 |
 
-  export const note = pgTable("note", {
-    id: text()
-      .primaryKey()
-      .$defaultFn(() => nanoid()),
-    userId: text()
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    // ...
-  });
-  ```
+`authRelations` uses `defineRelationsPart`, so it must be spread **after** the
+main relations in the `drizzle()` call — see the comment in `src/index.ts`.
 
-- `packages/<module>/src/data.ts` — queries/commands via the shared client:
+Feature modules keep their tables in their own package (`packages/*/src/schema.ts`).
+Drizzle Kit's glob picks them up, so adding a module requires no edit here.
 
-  ```ts
-  import { db } from "@repo/db";
-  import { eq } from "drizzle-orm";
-  import { note } from "./schema";
+## Commands
 
-  export function listNotes(userId: string) {
-    return db.select().from(note).where(eq(note.userId, userId));
-  }
-  ```
+```sh
+vpr db generate     # diff the schema, write a migration
+vpr db migrate      # apply pending migrations
+vpr db studio       # browse the data
+vpr auth:generate   # regenerate auth.schema.ts from packages/auth/src/auth.ts
+```
 
-Modules use the explicit query builder (`db.select()/insert()/update()/delete()`).
-The relational query API (`db.query.*`) is reserved for the core schema, since
-registering module relations on the client would require `@repo/db` to import
-modules — a dependency cycle. Modules depend on `@repo/db`, never the reverse.
-
-## Migrations
-
-`drizzle.config.ts` globs `./src/schema/index.ts` + `../*/src/schema.ts`, so
-generating migrations sees the core schema **and** every module's tables. Add a
-module → add its `src/schema.ts` → it is included automatically. No central
-registration edit required.
+`vpr db` is Drizzle Kit — any of its subcommands work.
