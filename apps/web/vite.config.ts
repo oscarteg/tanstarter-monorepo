@@ -35,6 +35,14 @@ export default defineConfig({
 
   resolve: {
     tsconfigPaths: true,
+    alias: {
+      // aria-hidden (pulled in by the Base UI dialog) is CJS and consumes tslib.
+      // Bundling tslib's UMD shim breaks the ESM/CJS interop at runtime —
+      // "Cannot destructure property '__extends'" — which throws while the chunk
+      // is evaluated, killing SSR for every route that renders a dialog.
+      // Resolving to the ESM build avoids the shim entirely.
+      tslib: "tslib/tslib.es6.mjs",
+    },
   },
   server: {
     port: 3000,

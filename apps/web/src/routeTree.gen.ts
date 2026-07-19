@@ -13,10 +13,13 @@ import { Route as GuestRouteRouteImport } from './routes/_guest/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestSignupRouteImport } from './routes/_guest/signup'
+import { Route as GuestResetPasswordRouteImport } from './routes/_guest/reset-password'
 import { Route as GuestLoginRouteImport } from './routes/_guest/login'
+import { Route as GuestForgotPasswordRouteImport } from './routes/_guest/forgot-password'
 import { Route as AuthAppRouteRouteImport } from './routes/_auth/app/route'
 import { Route as AuthAppIndexRouteImport } from './routes/_auth/app/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthAppSettingsRouteImport } from './routes/_auth/app/settings'
 import { Route as AuthAppNotesRouteImport } from './routes/_auth/app/notes'
 
 const GuestRouteRoute = GuestRouteRouteImport.update({
@@ -37,9 +40,19 @@ const GuestSignupRoute = GuestSignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => GuestRouteRoute,
 } as any)
+const GuestResetPasswordRoute = GuestResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => GuestRouteRoute,
+} as any)
 const GuestLoginRoute = GuestLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => GuestRouteRoute,
+} as any)
+const GuestForgotPasswordRoute = GuestForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => GuestRouteRoute,
 } as any)
 const AuthAppRouteRoute = AuthAppRouteRouteImport.update({
@@ -57,6 +70,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthAppSettingsRoute = AuthAppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthAppRouteRoute,
+} as any)
 const AuthAppNotesRoute = AuthAppNotesRouteImport.update({
   id: '/notes',
   path: '/notes',
@@ -66,17 +84,23 @@ const AuthAppNotesRoute = AuthAppNotesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AuthAppRouteRouteWithChildren
+  '/forgot-password': typeof GuestForgotPasswordRoute
   '/login': typeof GuestLoginRoute
+  '/reset-password': typeof GuestResetPasswordRoute
   '/signup': typeof GuestSignupRoute
   '/app/notes': typeof AuthAppNotesRoute
+  '/app/settings': typeof AuthAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/': typeof AuthAppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof GuestForgotPasswordRoute
   '/login': typeof GuestLoginRoute
+  '/reset-password': typeof GuestResetPasswordRoute
   '/signup': typeof GuestSignupRoute
   '/app/notes': typeof AuthAppNotesRoute
+  '/app/settings': typeof AuthAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app': typeof AuthAppIndexRoute
 }
@@ -86,27 +110,51 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_guest': typeof GuestRouteRouteWithChildren
   '/_auth/app': typeof AuthAppRouteRouteWithChildren
+  '/_guest/forgot-password': typeof GuestForgotPasswordRoute
   '/_guest/login': typeof GuestLoginRoute
+  '/_guest/reset-password': typeof GuestResetPasswordRoute
   '/_guest/signup': typeof GuestSignupRoute
   '/_auth/app/notes': typeof AuthAppNotesRoute
+  '/_auth/app/settings': typeof AuthAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_auth/app/': typeof AuthAppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/app' | '/login' | '/signup' | '/app/notes' | '/api/auth/$' | '/app/'
+    | '/'
+    | '/app'
+    | '/forgot-password'
+    | '/login'
+    | '/reset-password'
+    | '/signup'
+    | '/app/notes'
+    | '/app/settings'
+    | '/api/auth/$'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/app/notes' | '/api/auth/$' | '/app'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/reset-password'
+    | '/signup'
+    | '/app/notes'
+    | '/app/settings'
+    | '/api/auth/$'
+    | '/app'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/_guest'
     | '/_auth/app'
+    | '/_guest/forgot-password'
     | '/_guest/login'
+    | '/_guest/reset-password'
     | '/_guest/signup'
     | '/_auth/app/notes'
+    | '/_auth/app/settings'
     | '/api/auth/$'
     | '/_auth/app/'
   fileRoutesById: FileRoutesById
@@ -148,11 +196,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestSignupRouteImport
       parentRoute: typeof GuestRouteRoute
     }
+    '/_guest/reset-password': {
+      id: '/_guest/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof GuestResetPasswordRouteImport
+      parentRoute: typeof GuestRouteRoute
+    }
     '/_guest/login': {
       id: '/_guest/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof GuestLoginRouteImport
+      parentRoute: typeof GuestRouteRoute
+    }
+    '/_guest/forgot-password': {
+      id: '/_guest/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof GuestForgotPasswordRouteImport
       parentRoute: typeof GuestRouteRoute
     }
     '/_auth/app': {
@@ -176,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/app/settings': {
+      id: '/_auth/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthAppSettingsRouteImport
+      parentRoute: typeof AuthAppRouteRoute
+    }
     '/_auth/app/notes': {
       id: '/_auth/app/notes'
       path: '/notes'
@@ -188,11 +257,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthAppRouteRouteChildren {
   AuthAppNotesRoute: typeof AuthAppNotesRoute
+  AuthAppSettingsRoute: typeof AuthAppSettingsRoute
   AuthAppIndexRoute: typeof AuthAppIndexRoute
 }
 
 const AuthAppRouteRouteChildren: AuthAppRouteRouteChildren = {
   AuthAppNotesRoute: AuthAppNotesRoute,
+  AuthAppSettingsRoute: AuthAppSettingsRoute,
   AuthAppIndexRoute: AuthAppIndexRoute,
 }
 
@@ -213,12 +284,16 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface GuestRouteRouteChildren {
+  GuestForgotPasswordRoute: typeof GuestForgotPasswordRoute
   GuestLoginRoute: typeof GuestLoginRoute
+  GuestResetPasswordRoute: typeof GuestResetPasswordRoute
   GuestSignupRoute: typeof GuestSignupRoute
 }
 
 const GuestRouteRouteChildren: GuestRouteRouteChildren = {
+  GuestForgotPasswordRoute: GuestForgotPasswordRoute,
   GuestLoginRoute: GuestLoginRoute,
+  GuestResetPasswordRoute: GuestResetPasswordRoute,
   GuestSignupRoute: GuestSignupRoute,
 }
 

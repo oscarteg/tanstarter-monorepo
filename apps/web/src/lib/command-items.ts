@@ -1,15 +1,22 @@
-import type { NavigationConfig } from "#/config/navigation";
+import type { LinkProps } from "@tanstack/react-router";
 
-export type CommandEntry = { label: string; url: string };
+import type { NavigationConfig } from "#/config/navigation";
+import type { ModuleNavItem } from "#/modules/types";
+
+export type CommandEntry = { label: string; url: LinkProps["to"] };
 export type CommandGroupData = { heading: string; entries: CommandEntry[] };
 
 /**
- * Flatten the sidebar navigation config into command-palette groups: one group
- * per primary nav item (its sub-links, or the item itself when it has none),
- * plus a "Projects" group. The palette derives entirely from `config/navigation`
- * so there's a single source of truth for what's navigable.
+ * Flatten the sidebar navigation into command-palette groups: one group per
+ * primary nav item (its sub-links, or the item itself when it has none), plus a
+ * "Modules" group for every enabled feature module. The palette derives
+ * entirely from the same config the sidebar uses, so there is a single source
+ * of truth for what's navigable.
  */
-export function buildCommandGroups(navigation: NavigationConfig): CommandGroupData[] {
+export function buildCommandGroups(
+  navigation: NavigationConfig,
+  moduleNav: ModuleNavItem[] = [],
+): CommandGroupData[] {
   const navGroups: CommandGroupData[] = navigation.navMain.map((item) => ({
     heading: item.title,
     entries: (item.items ?? [{ title: item.title, url: item.url }]).map((sub) => ({
@@ -18,10 +25,18 @@ export function buildCommandGroups(navigation: NavigationConfig): CommandGroupDa
     })),
   }));
 
-  const projects: CommandGroupData = {
-    heading: "Projects",
-    entries: navigation.projects.map((project) => ({ label: project.name, url: project.url })),
-  };
+  if (moduleNav.length === 0) return navGroups;
 
-  return [...navGroups, projects];
+  return [
+    ...navGroups,
+    {
+      heading: "Modules",
+      // Module packages can't import the app's route tree, so their urls are
+      // plain strings — narrowed here at the one boundary where they meet it.
+      entries: moduleNav.map((item) => ({
+        label: item.title,
+        url: item.url as LinkProps["to"],
+      })),
+    },
+  ];
 }

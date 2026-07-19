@@ -11,13 +11,15 @@ import { useNavigate } from "@tanstack/react-router";
 import { Fragment, useEffect } from "react";
 
 import { navigation } from "#/config/navigation";
-import { buildCommandGroups } from "#/lib/command-items";
+import { type CommandEntry, buildCommandGroups } from "#/lib/command-items";
+import { enabledModules } from "#/modules/registry";
 import { useUiStore } from "#/stores/ui-store";
 
 /**
  * ⌘K command palette. Opens on ⌘K / Ctrl+K or via the app-shell search field
  * (both drive `ui-store.commandOpen`). Entries come from `config/navigation`
- * (see `buildCommandGroups`), so changing the sidebar changes the palette too.
+ * (see `buildCommandGroups`) plus every enabled module's nav, so changing the
+ * sidebar changes the palette too.
  */
 export function CommandMenu() {
   const open = useUiStore((state) => state.commandOpen);
@@ -36,14 +38,16 @@ export function CommandMenu() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [toggle]);
 
-  const go = (url: string) => {
+  const go = (url: CommandEntry["url"]) => {
     setOpen(false);
-    if (url === "#") return;
-    // Config-driven paths aren't part of the typed route tree; navigate by string.
-    navigate({ to: url as "/" });
+    if (!url) return;
+    void navigate({ to: url });
   };
 
-  const groups = buildCommandGroups(navigation);
+  const groups = buildCommandGroups(
+    navigation,
+    enabledModules.flatMap((module) => module.nav ?? []),
+  );
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>

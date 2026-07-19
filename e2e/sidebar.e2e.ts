@@ -18,11 +18,14 @@ test.describe("app shell", () => {
     await expect(page).toHaveURL(/\/app/);
   });
 
-  test("the team switcher opens without crashing", async ({ page }) => {
-    await page.getByRole("button", { name: /Acme/i }).first().click();
+  test("the sidebar links to real routes, not placeholders", async ({ page }) => {
+    // A template that ships dead "#" links makes every clone clean them up.
+    const hrefs = await page
+      .locator("[data-slot='sidebar'] a")
+      .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
 
-    await expect(page.getByText("Teams")).toBeVisible();
-    await expect(page.getByText("Add team")).toBeVisible();
+    expect(hrefs.length).toBeGreaterThan(0);
+    expect(hrefs).not.toContain("#");
   });
 
   test("the user menu opens and can sign out", async ({ page }) => {
