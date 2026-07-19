@@ -34,7 +34,7 @@ import {
   useSidebar,
 } from "@repo/ui/components/sidebar";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouterState } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   BadgeCheckIcon,
   BellIcon,
@@ -112,23 +112,26 @@ function TeamSwitcher() {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
-            {navigation.teams.map((team, index) => {
-              const Logo = team.logo;
-              return (
-                <DropdownMenuItem
-                  key={team.name}
-                  onClick={() => setActiveTeam(team)}
-                  className="gap-2 p-2"
-                >
-                  <div className="flex size-6 items-center justify-center rounded-md border">
-                    <Logo className="size-3.5 shrink-0" />
-                  </div>
-                  {team.name}
-                  <span className="ml-auto text-xs text-muted-foreground">⌘{index + 1}</span>
-                </DropdownMenuItem>
-              );
-            })}
+            {/* GroupLabel must live inside a Group — Base UI throws otherwise. */}
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
+              {navigation.teams.map((team, index) => {
+                const Logo = team.logo;
+                return (
+                  <DropdownMenuItem
+                    key={team.name}
+                    onClick={() => setActiveTeam(team)}
+                    className="gap-2 p-2"
+                  >
+                    <div className="flex size-6 items-center justify-center rounded-md border">
+                      <Logo className="size-3.5 shrink-0" />
+                    </div>
+                    {team.name}
+                    <span className="ml-auto text-xs text-muted-foreground">⌘{index + 1}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
@@ -274,6 +277,7 @@ function NavUser() {
   const { isMobile } = useSidebar();
   const { user } = useAuthSuspense();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   if (!user) return null;
 
@@ -293,6 +297,9 @@ function NavUser() {
         },
       },
     });
+    // Clearing the cache alone leaves the signed-out user sitting on /app:
+    // the guard runs in beforeLoad, which won't re-run without navigation.
+    await navigate({ to: "/login" });
   };
 
   return (
@@ -323,18 +330,18 @@ function NavUser() {
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="size-8 rounded-lg">
-                  <AvatarImage src={user.image ?? undefined} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
+            {/* A plain header, not a GroupLabel: it labels no group, and
+                GroupLabel outside a Group throws in Base UI. */}
+            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <Avatar className="size-8 rounded-lg">
+                <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate text-xs">{user.email}</span>
               </div>
-            </DropdownMenuLabel>
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>

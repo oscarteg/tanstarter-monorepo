@@ -18,21 +18,21 @@
   --weight-bold: 700;
 
   /* display / headings (grotesk, tight tracking) */
-  --text-display: 700 52px/1 var(--font-sans); /* page titles */
-  --text-h1: 700 44px/1 var(--font-sans);
-  --text-h2: 600 22px/1.05 var(--font-sans);
-  --text-lead: 400 26px/1.42 var(--font-sans); /* intro paragraph */
-  --text-h3: 600 18px/1.15 var(--font-sans);
+  --type-display: 700 52px/1 var(--font-sans); /* page titles */
+  --type-h1: 700 44px/1 var(--font-sans);
+  --type-h2: 600 22px/1.05 var(--font-sans);
+  --type-lead: 400 26px/1.42 var(--font-sans); /* intro paragraph */
+  --type-h3: 600 18px/1.15 var(--font-sans);
 
   /* body */
-  --text-body-lg: 400 16px/1.65 var(--font-sans);
-  --text-body: 400 15px/1.62 var(--font-sans);
-  --text-small: 400 14px/1.6 var(--font-sans);
+  --type-body-lg: 400 16px/1.65 var(--font-sans);
+  --type-body: 400 15px/1.62 var(--font-sans);
+  --type-small: 400 14px/1.6 var(--font-sans);
 
   /* mono labels — always uppercase w/ wide tracking */
-  --text-kicker: 700 11px/1.2 var(--font-mono); /* SECTION LABELS */
-  --text-mono: 400 12px/1.5 var(--font-mono); /* metadata */
-  --text-mono-sm: 400 11px/1.4 var(--font-mono);
+  --type-kicker: 700 11px/1.2 var(--font-mono); /* SECTION LABELS */
+  --type-mono: 400 12px/1.5 var(--font-mono); /* metadata */
+  --type-mono-sm: 400 11px/1.4 var(--font-mono);
 
   /* tracking */
   --track-tight: -0.025em; /* large display */

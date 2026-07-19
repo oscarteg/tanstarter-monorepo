@@ -41,7 +41,7 @@ export default defineConfig({
     },
     {
       name: "app",
-      testMatch: "**/auth.e2e.ts",
+      testMatch: ["**/auth.e2e.ts", "**/sidebar.e2e.ts"],
       use: { ...devices["Desktop Chrome"], baseURL: APP_URL },
     },
   ],
