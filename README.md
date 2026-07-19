@@ -103,9 +103,10 @@ Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/doc
 This template deploys as a container running the Nitro **Node SSR** server (not a static host). CI builds and publishes the image to the GitHub Container Registry (`ghcr.io`) on every push to `main`.
 
 - The multi-stage `Dockerfile` installs the workspace, runs `pnpm build:web`, and ships a slim runtime that serves `.output/server/index.mjs` as a non-root user on port 3000.
-- **`docker compose up`** starts Postgres, runs migrations once (the `migrate` one-shot service), then starts the app at http://localhost:3000.
-- **Migrations** run via `pnpm --filter @repo/db db migrate` (Drizzle). Compose runs this before `web` starts; run it against any environment by setting `DATABASE_URL` and invoking the same command.
-- Configure the app with `DATABASE_URL`, `VITE_BASE_URL`, and `BETTER_AUTH_SECRET` (plus optional OAuth client IDs/secrets). Never bake secrets into the image.
+- **`docker compose up -d`** starts only Postgres — what local development and the E2E suite need.
+- **`docker compose --profile full up`** additionally runs migrations once (the `migrate` one-shot service) and serves the containerised app at http://localhost:3000. It builds the image, so it's opt-in.
+- **Migrations** run via `pnpm --filter @repo/db db migrate` (Drizzle). The `full` profile runs this before `web` starts; run it against any environment by setting `DATABASE_URL` and invoking the same command.
+- Configure the app with `DATABASE_URL`, `VITE_BASE_URL`, and `BETTER_AUTH_SECRET` (plus optional Authelia SSO credentials). Never bake secrets into the image.
 
 ### Continuous integration
 

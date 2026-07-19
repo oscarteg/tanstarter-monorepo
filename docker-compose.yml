@@ -17,7 +17,12 @@ services:
 
   # One-shot: apply Drizzle migrations, then exit. Uses the build stage (which
   # has drizzle-kit + the workspace); the web image itself stays slim.
+  #
+  # In the `full` profile so `docker compose up` (and dev.sh) only starts the
+  # database — running the containerised app is opt-in via
+  # `docker compose --profile full up`, since it builds the whole image.
   migrate:
+    profiles: [full]
     build:
       context: .
       target: build
@@ -30,6 +35,7 @@ services:
 
   # The SSR app, served from the self-contained Nitro output.
   web:
+    profiles: [full]
     build:
       context: .
       target: runner
