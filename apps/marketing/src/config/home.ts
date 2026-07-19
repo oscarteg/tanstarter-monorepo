@@ -164,7 +164,7 @@ export const home: HomeConfig = {
     eyebrow: "Built for scale",
     headline: "The inbox powering customer conversations everywhere.",
     subheadline:
-      "Oatmeal helps teams deliver personal, organized, and fast customer support across the world. From small startups to enterprise teams, we process millions of messages each month — using a massive network of low wage workers stationed around the globe.",
+      "Oatmeal helps teams deliver personal, organized, and fast customer support across the world. From small startups to enterprise teams, we process millions of messages each month.",
     items: [
       { value: "2M+", text: "Emails manually processed every week across thousands of teams." },
       { value: "99.98%", text: "Uptime — because your customers never stop complaining." },
@@ -290,12 +290,11 @@ export const home: HomeConfig = {
         popular: false,
         features: [
           "Everything in Growth",
-          "Custom roles & permissions",
           "Automation engine",
           "API access",
           "SLA tracking",
-          "SSO support",
-          "SOC 2 compliance",
+          "Priority support",
+          "Onboarding assistance",
         ],
         cta: startTrial,
       },
@@ -305,7 +304,7 @@ export const home: HomeConfig = {
   cta: {
     headline: "Ready to make customer support feel simple again?",
     subheadline:
-      "Join hundreds of teams using Oatmeal to deliver faster, friendlier email support — using a massive network of low wage workers stationed around the globe.",
+      "Join hundreds of teams using Oatmeal to deliver faster, friendlier email support.",
     primaryCta: startTrial,
     secondaryCta: { label: "Book a demo", href: "#demo" },
   },
