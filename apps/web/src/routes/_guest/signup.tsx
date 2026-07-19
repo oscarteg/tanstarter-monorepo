@@ -1,4 +1,3 @@
-import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
 import { authClient } from "@repo/auth/auth-client";
 import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
@@ -13,12 +12,13 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon, ShieldCheckIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as v from "valibot";
 
 import { SignInSocialButton } from "#/components/sign-in-social-button";
+import { authConfig } from "#/config/auth";
 
 export const Route = createFileRoute("/_guest/signup")({
   component: SignupForm,
@@ -175,20 +175,16 @@ function SignupForm() {
                 {isPending && <LoaderCircleIcon className="animate-spin" />}
                 {isPending ? "Creating account..." : "Create Account"}
               </Button>
-              <SignInSocialButton
-                provider="github"
-                label="Sign up with"
-                callbackURL={redirectUrl}
-                disabled={isPending}
-                icon={<SiGithub className="size-4" />}
-              />
-              <SignInSocialButton
-                provider="google"
-                label="Sign up with"
-                callbackURL={redirectUrl}
-                disabled={isPending}
-                icon={<SiGoogle className="size-4" />}
-              />
+              {authConfig.ssoEnabled && (
+                <SignInSocialButton
+                  provider={authConfig.ssoProvider}
+                  providerLabel={authConfig.ssoLabel}
+                  label="Sign up with"
+                  callbackURL={redirectUrl}
+                  disabled={isPending}
+                  icon={<ShieldCheckIcon className="size-4" />}
+                />
+              )}
             </div>
 
             <div className="text-center text-sm">

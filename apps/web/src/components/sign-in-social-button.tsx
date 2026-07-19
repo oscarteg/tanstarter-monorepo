@@ -10,13 +10,14 @@ interface SocialLoginButtonProps {
   callbackURL: string;
   /** Leading verb for the button label, e.g. "Login with" (default) or "Sign up with". */
   label?: string;
+  /** Display name for the provider. Defaults to the capitalized provider id. */
+  providerLabel?: string;
 }
 
 export function SignInSocialButton(props: SocialLoginButtonProps) {
   const providerLabel =
-    props.provider === "github"
-      ? "GitHub"
-      : props.provider.charAt(0).toUpperCase() + props.provider.slice(1);
+    props.providerLabel ??
+    props.provider.charAt(0).toUpperCase() + props.provider.slice(1);
 
   const mutation = useMutation({
     mutationFn: async () =>

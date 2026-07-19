@@ -1,4 +1,3 @@
-import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
 import { authClient } from "@repo/auth/auth-client";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -12,7 +11,7 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon, ShieldCheckIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { SignInSocialButton } from "#/components/sign-in-social-button";
@@ -68,31 +67,34 @@ function LoginForm() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login with your GitHub or Google account</CardDescription>
+          <CardDescription>
+            {authConfig.ssoEnabled
+              ? `Login with your ${authConfig.ssoLabel} account`
+              : "Login with your email and password"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-6">
-              <div className="flex flex-col gap-4">
-                <SignInSocialButton
-                  provider="github"
-                  callbackURL={redirectUrl}
-                  disabled={isPending}
-                  icon={<SiGithub className="size-4" />}
-                />
-                <SignInSocialButton
-                  provider="google"
-                  callbackURL={redirectUrl}
-                  disabled={isPending}
-                  icon={<SiGoogle className="size-4" />}
-                />
-              </div>
+              {authConfig.ssoEnabled && (
+                <>
+                  <div className="flex flex-col gap-4">
+                    <SignInSocialButton
+                      provider={authConfig.ssoProvider}
+                      providerLabel={authConfig.ssoLabel}
+                      callbackURL={redirectUrl}
+                      disabled={isPending}
+                      icon={<ShieldCheckIcon className="size-4" />}
+                    />
+                  </div>
 
-              <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                <span className="relative z-10 bg-card px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
+                  <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                    <span className="relative z-10 bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </>
+              )}
 
               <div className="grid gap-6">
                 <div className="grid gap-2">
