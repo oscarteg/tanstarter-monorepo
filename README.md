@@ -109,7 +109,27 @@ This template deploys as a container running the Nitro **Node SSR** server (not 
 
 ### Continuous integration
 
-[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs on every pull request and push to `main`: format check, lint + typecheck, tests, and build (with a Postgres service for DB-touching tests). On `main`, a second job builds the Docker image and publishes it to `ghcr.io/<owner>/<repo>` (`latest` + `sha-` tags). It authenticates with the built-in `GITHUB_TOKEN` — no extra secrets — and only needs the repository's Actions permission to write packages (granted per-job via `packages: write`).
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs on every pull request and push to `main`: format check, lint + typecheck, tests, and build. On `main`, a second job builds the Docker image (amd64 + arm64) and publishes it to `ghcr.io/<owner>/<repo>` (`latest` + `sha-` tags). It authenticates with the built-in `GITHUB_TOKEN` — no extra secrets — and only needs the repository's Actions permission to write packages (granted per-job via `packages: write`).
+
+Note that `jj` does not run git hooks, so the staged-file formatter never fires on `jj commit`. Run `vp check` (format + lint + typecheck) before pushing; CI is the backstop.
+
+### End-to-end tests
+
+[`.github/workflows/e2e.yml`](./.github/workflows/e2e.yml) runs [Playwright](https://playwright.dev) on every pull request and push to `main`. Nothing has to be deployed first: `webServer` in [`playwright.config.ts`](./playwright.config.ts) builds and serves both apps itself.
+
+- **`marketing`** — runs against a preview of the static build.
+- **`app`** — runs against the real SSR server (the same Nitro output the Docker image runs), so it needs Postgres with migrations applied.
+
+Locally:
+
+```bash
+docker compose up -d db
+pnpm db migrate
+pnpm exec playwright install chromium   # first run only
+pnpm test:e2e
+```
+
+`DATABASE_URL` defaults to the compose database; export it to point somewhere else.
 
 ### Build caching
 

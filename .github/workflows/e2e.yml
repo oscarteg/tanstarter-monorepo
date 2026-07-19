@@ -14,8 +14,27 @@ permissions:
 
 jobs:
   e2e:
-    name: Playwright (marketing smoke)
+    name: Playwright
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # The app suite boots the real SSR server, so it needs a database.
+    services:
+      postgres:
+        image: postgres:alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: tanstarter
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d tanstarter"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://postgres:password@localhost:5432/tanstarter
+      BETTER_AUTH_SECRET: e2e-secret-not-for-production-min-32-chars
     steps:
       - uses: actions/checkout@v4
 
@@ -32,8 +51,12 @@ jobs:
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
 
-      # Runs the marketing smoke (webServer builds + previews the static site).
-      # The auth suite skips itself unless E2E_APP_URL points at a running app.
+      # The app suite signs up a real user, so the schema has to exist.
+      - name: Apply migrations
+        run: pnpm db migrate
+
+      # Playwright builds and serves both apps itself (see webServer in
+      # playwright.config.ts) — nothing needs to be deployed first.
       - name: E2E
         run: pnpm test:e2e
 

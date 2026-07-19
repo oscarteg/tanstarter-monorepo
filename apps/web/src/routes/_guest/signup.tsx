@@ -100,7 +100,10 @@ function SignupForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Create an account</CardTitle>
+        {/* CardTitle renders a div, so the h1 carries the page heading. */}
+        <CardTitle className="text-xl">
+          <h1>Create an account</h1>
+        </CardTitle>
         <CardDescription>Enter your information below to create your account</CardDescription>
       </CardHeader>
       <CardContent>

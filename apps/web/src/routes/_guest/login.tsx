@@ -66,7 +66,10 @@ function LoginForm() {
 
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+          {/* CardTitle renders a div, so the h1 carries the page heading. */}
+          <CardTitle className="text-xl">
+            <h1>Welcome back</h1>
+          </CardTitle>
           <CardDescription>
             {authConfig.ssoEnabled
               ? `Login with your ${authConfig.ssoLabel} account`
