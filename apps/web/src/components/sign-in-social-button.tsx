@@ -16,8 +16,7 @@ interface SocialLoginButtonProps {
 
 export function SignInSocialButton(props: SocialLoginButtonProps) {
   const providerLabel =
-    props.providerLabel ??
-    props.provider.charAt(0).toUpperCase() + props.provider.slice(1);
+    props.providerLabel ?? props.provider.charAt(0).toUpperCase() + props.provider.slice(1);
 
   const mutation = useMutation({
     mutationFn: async () =>
