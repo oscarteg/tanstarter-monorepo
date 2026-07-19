@@ -2,6 +2,7 @@ import "@tanstack/react-start/server-only";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { db } from "@repo/db";
 import * as schema from "@repo/db/schema";
+import { sendEmail } from "@repo/email";
 import { betterAuth } from "better-auth/minimal";
 import { genericOAuth } from "better-auth/plugins/generic-oauth";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
@@ -64,6 +65,32 @@ export const auth = betterAuth({
   // https://better-auth.com/docs/authentication/email-password
   emailAndPassword: {
     enabled: true,
+    // Delivery is the environment's problem, not this file's: with no email
+    // provider configured the reset link is printed to the console, which is
+    // all a fresh clone needs. See `@repo/email`.
+    sendResetPassword: async ({ user, url }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        text: [
+          `Hi ${user.name || "there"},`,
+          "",
+          "Use the link below to choose a new password. It expires in one hour.",
+          "",
+          url,
+          "",
+          "If you didn't ask to reset your password, you can ignore this email.",
+        ].join("\n"),
+      });
+    },
+  },
+
+  user: {
+    // Off by default in Better Auth. The settings screen exposes it behind a
+    // confirmation dialog; deletion requires a live session.
+    deleteUser: {
+      enabled: true,
+    },
   },
 
   experimental: {

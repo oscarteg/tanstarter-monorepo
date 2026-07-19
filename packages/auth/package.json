@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "catalog:",
+    "@repo/email": "workspace:*",
     "better-auth": "catalog:"
   },
   "devDependencies": {

@@ -37,3 +37,42 @@ test.describe("auth", () => {
     await expect(page).toHaveURL(/\/login/);
   });
 });
+
+test.describe("password reset", () => {
+  // This link pointed at a route that did not exist — a 404 on the most-clicked
+  // link of the login page.
+  test("the login page links to a real forgot-password page", async ({ page }) => {
+    await page.goto("/login");
+    await page.getByRole("link", { name: "Forgot your password?" }).click();
+
+    await expect(page).toHaveURL(/\/forgot-password/);
+    await expect(page.getByRole("heading", { name: "Forgot your password?" })).toBeVisible();
+  });
+
+  test("requesting a link confirms without revealing whether the account exists", async ({
+    page,
+  }) => {
+    await page.goto("/forgot-password");
+    await page.getByLabel("Email").fill(`nobody+${Date.now()}@example.com`);
+    await page.getByRole("button", { name: "Send reset link" }).click();
+
+    // Same confirmation for a non-existent address as for a real one —
+    // anything else would make this an account-enumeration oracle.
+    await expect(page.getByRole("heading", { name: "Check your email" })).toBeVisible();
+  });
+
+  test("a reset link with no token offers a way to request a fresh one", async ({ page }) => {
+    await page.goto("/reset-password");
+
+    await expect(page.getByRole("heading", { name: "This link is no longer valid" })).toBeVisible();
+    await page.getByRole("link", { name: "Request a new reset link" }).click();
+    await expect(page).toHaveURL(/\/forgot-password/);
+  });
+
+  test("an expired token is reported rather than shown a dead form", async ({ page }) => {
+    await page.goto("/reset-password?error=INVALID_TOKEN");
+
+    await expect(page.getByRole("heading", { name: "This link is no longer valid" })).toBeVisible();
+    await expect(page.getByText(/expired or was already used/)).toBeVisible();
+  });
+});
