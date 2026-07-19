@@ -1,4 +1,3 @@
-import type { AnyRoute } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 
 /**
@@ -12,23 +11,26 @@ export type ModuleNavItem = {
 };
 
 /**
- * A feature module: a self-contained unit that owns its routes, UI, and data
- * access, and can be toggled on/off from the registry. A module package's
- * single entry point exports one `AppModule`.
+ * A feature module: a self-contained package that owns its UI, data access, and
+ * server functions, exposed through a single entry point.
+ *
+ * Routing stays with the app: each module is mounted by a thin route file under
+ * `routes/_auth/app/` so its route remains part of TanStack Start's generated,
+ * type-safe route tree. (Assembling the tree by hand instead produces an invalid
+ * tree at runtime — `createRouter` throws on malformed segments.)
+ *
+ * `enabled` is the single on/off switch: the registry filters disabled modules
+ * out of the sidebar nav, and each mount file guards on it, so a disabled module
+ * contributes neither nav nor a reachable route.
  */
 export type AppModule = {
   /** Stable key, e.g. "notes". */
   id: string;
   title: string;
-  /** The on/off switch — disabled modules contribute neither routes nor nav. */
+  /** The on/off switch. */
   enabled: boolean;
   /** Sidebar entries contributed by this module. */
   nav?: ModuleNavItem[];
-  /**
-   * Route factory. Given the authed app-shell parent route, returns the
-   * module's routes to mount beneath it (path is relative to `/app`).
-   */
-  routes: (parent: AnyRoute) => AnyRoute[];
 };
 
 /** Identity helper for authoring a module with inference + a single call site. */
