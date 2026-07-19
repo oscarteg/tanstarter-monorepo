@@ -16,24 +16,10 @@ jobs:
   check:
     name: Format, lint, test, build
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: tanstarter
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgres://postgres:password@localhost:5432/tanstarter
-      VITE_BASE_URL: http://localhost:3000
-      BETTER_AUTH_SECRET: ci-secret-not-for-production
+    # No database service: none of these steps connect to one. The build only
+    # bundles (it never evaluates the db client) and the tests are unit-level.
+    # Add Postgres back here when a step actually needs it — the E2E job is the
+    # place that will, since it boots the app for real.
     steps:
       - uses: actions/checkout@v4
 
@@ -59,7 +45,7 @@ jobs:
         run: pnpm run lint
 
       - name: Test
-        run: pnpm test -- --passWithNoTests
+        run: pnpm test
 
       - name: Build
         run: pnpm run build
